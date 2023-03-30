@@ -168,8 +168,8 @@
       userLogin() {
         this.$refs["loginUser"].validate((valid) => {
           if (valid) {
-            this.$axios.post("http://127.0.0.1:8000/stu/login/", JSON.stringify(this.loginUser)).then(response => {
-              if (response.data.code === 200) {
+            this.$axios.post("post_url", JSON.stringify(this.loginUser)).then(response => {
+              if (sucess_message) {
                 this.$message({
                   message: "登录成功！",
                   type: "success"
@@ -180,13 +180,10 @@
                 sessionStorage.password = this.loginUser.user_password;
   
                 setTimeout(() => {
-                  this.$router.push("/studentmain");
+                  this.$router.push("////主页url");
                 }, 500);
-              } else {
-                this.$alert(response.data.prompt, {
-                  type: "error",
-                  confirmButtonText: "确定",
-                })
+              } else {  //error message
+                
               }
             }).catch(response => {
               console.log(response)
