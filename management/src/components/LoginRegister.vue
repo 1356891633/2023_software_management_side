@@ -81,7 +81,7 @@
   
               <div style="flex: 2">
                 <el-button type="success" style="background-color:#257B5E;border: 1px solid #ffffff;" round
-                           @click="changeToRegister">忘记密码？点击找回
+                           @click="changeToFind">忘记密码？点击找回
                 </el-button>
               </div>
             </div>
@@ -147,7 +147,7 @@
       // this.loadInfoOfAdmin();
     },
     methods: {
-      changeToRegister() {
+      changeToFind() {
         this.styleObj.bordertoprightradius = '0px'
         this.styleObj.borderbottomrightradius = '0px'
         this.styleObj.bordertopleftradius = '15px'
@@ -195,34 +195,6 @@
         })
       }
       ,
-      userRegister() {
-        this.$refs["regUser"].validate((valid) => {
-          if (valid) {
-            this.$axios.post('http://127.0.0.1:8000/stu/register/', JSON.stringify(this.regUser)).then(response => {
-              if (response.data.code === 200) {
-  
-                this.$message({
-                    message: "注册成功！",
-                    type: "success"
-                  }
-                );
-  
-                this.$refs["regUser"].resetFields();
-              } else {
-                this.$alert(response.data.prompt, {
-                  type: "error",
-                  confirmButtonText: "确定",
-                })
-              }
-            }).catch(response => {
-              console.log(response)
-            })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        })
-      },
     },
   
   
