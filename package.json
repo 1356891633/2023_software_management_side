@@ -1,5 +1,24 @@
 {
   "dependencies": {
     "element-ui": "^2.15.13"
-  }
+  },
+  "name": "2023_software_management_side",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1356891633/2023_software_management_side.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1356891633/2023_software_management_side/issues"
+  },
+  "homepage": "https://github.com/1356891633/2023_software_management_side#readme"
 }
