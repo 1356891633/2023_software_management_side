@@ -139,7 +139,9 @@
           borderbottomleftradius: '0px',
           rightDis: '0px'
         },
-        isShow: true
+        isShow: true,
+        Token:"",
+        ManagerUserData:{},
       }
     }
     ,
@@ -147,6 +149,12 @@
       // this.loadInfoOfAdmin();
     },
     methods: {
+      getinfo(){
+        this.$axios.post("token-get-info-url",
+            JSON.stringify(this.Token)).then((response) => {
+                this.ManagerUserData=response.data.user;
+        });
+        },
       changeToFind() {
         this.styleObj.bordertoprightradius = '0px'
         this.styleObj.borderbottomrightradius = '0px'
@@ -165,6 +173,7 @@
         this.isShow = !this.isShow
       }
       ,
+
       userLogin() {
         this.$refs["loginUser"].validate((valid) => {
           if (valid) {
@@ -174,8 +183,10 @@
                   message: "登录成功！",
                   type: "success"
                 });
+                this.Token=response.data.token;
+                this.getinfo();
                 setTimeout(() => {
-                  this.$router.push({path:'/themepost',query:response.data.token});
+                  this.$router.push({path:'/themepost',query:this.Token});
                 }, 500);
               } else {  //error message
                 
