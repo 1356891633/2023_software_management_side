@@ -112,7 +112,7 @@
       </div>
     </div>
   
-  </template>
+</template>
   
   <script>
   export default {
@@ -169,18 +169,13 @@
         this.$refs["loginUser"].validate((valid) => {
           if (valid) {
             this.$axios.post("post_url", JSON.stringify(this.loginUser)).then(response => {
-              if (sucess_message) {
+              if (response.code==200) {
                 this.$message({
                   message: "登录成功！",
                   type: "success"
                 });
-  
-                sessionStorage.clear();
-                sessionStorage.username = this.loginUser.user_id;
-                sessionStorage.password = this.loginUser.user_password;
-  
                 setTimeout(() => {
-                  this.$router.push("////主页url");
+                  this.$router.push({path:'/themepost',query:response.data.token});
                 }, 500);
               } else {  //error message
                 
