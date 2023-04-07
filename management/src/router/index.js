@@ -5,6 +5,7 @@ import MainGround from '../components/MainGround.vue'
 import Tiezi from '../components/Tiezi.vue'
 import Dangan from '../components/Dangan.vue'
 import Qiuzhu from '../components/Qiuzhu.vue'
+import UserEdit from '../components/UserEdit.vue'
 Vue.use(Router)
 export default new Router({
   routes:[
@@ -27,6 +28,10 @@ export default new Router({
     {
       path: '/Qiuzhu',
       component:Qiuzhu
+    },
+    {
+      path: '/UserEdit',
+      component:UserEdit
     },
   ]
 })
