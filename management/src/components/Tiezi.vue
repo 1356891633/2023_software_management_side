@@ -7,7 +7,7 @@
             <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu">用户管理</span></el-menu-item>
             <el-menu-item index="2" route="/Tiezi">帖子管理</el-menu-item>
             <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan">档案管理</span></el-menu-item>
-            <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu">求组管理</span></el-menu-item>
+            <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu">求助管理</span></el-menu-item>
             </el-menu>
         </el-aside>
     </el-container>
