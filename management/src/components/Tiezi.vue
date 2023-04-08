@@ -1,9 +1,9 @@
 <template>
     <el-container>
-        <el-header style="background-color: grey;">
+        <el-header class="el-header">
         </el-header>
         <el-container>
-            <el-aside width="200px">
+            <el-aside width="200px" class="el-aside">
                 <el-menu :default-active="menuActivateIndex" mode="vertical" router>
                     <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu">用户管理</span></el-menu-item>
                     <el-menu-item index="2" route="/Tiezi">帖子管理</el-menu-item>
@@ -11,7 +11,7 @@
                     <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu">求助管理</span></el-menu-item>
                 </el-menu>
             </el-aside>
-            <el-main>
+            <el-main class="el-main">
                 <el-card class="box-card" v-for="post in postDatas">
                     <div slot="header" class="clearfix">
                         <span>{{ post.postTitle }}</span>
