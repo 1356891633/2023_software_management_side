@@ -6,6 +6,7 @@ import Tiezi from '../components/Tiezi.vue'
 import Dangan from '../components/Dangan.vue'
 import Qiuzhu from '../components/Qiuzhu.vue'
 import UserEdit from '../components/UserEdit.vue'
+import PostEdit from '../components/PostEdit.vue'
 Vue.use(Router)
 export default new Router({
   routes:[
@@ -32,6 +33,11 @@ export default new Router({
     {
       path: '/UserEdit',
       component:UserEdit
+    },
+    {
+      path:'/PostEdit',
+      name:"PostEdit",
+      component:PostEdit
     },
   ]
 })

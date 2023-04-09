@@ -12,17 +12,22 @@
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
-                <div></div>
-                <el-card class="box-card" v-for="post in postDatas">
-                    <div slot="header" class="clearfix">
-                        <span>{{ post.postTitle }}</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="editPost(post)">编辑</el-button>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="deletePost(post)">删除</el-button>
-                    </div>
-                    <div>
-                        {{ post.postText }}
-                    </div>
-                </el-card>
+                <el-form ref="form" :model="postData" label-width="80px">
+                    <el-form-item label="帖子标题">
+                        <el-input v-model="postData.postTitle" placeholder=""></el-input>
+                    </el-form-item>
+                    <el-form-item></el-form-item>
+                    <el-form-item v-if="isEdit">
+                        编辑
+                    </el-form-item>
+                    <el-form-item v-else>
+                        修改
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                        <el-button>取消</el-button>
+                    </el-form-item>
+                </el-form>
             </el-main>
         </el-container>
 
@@ -30,28 +35,24 @@
 </template>
 <script>
 
+
 export default ({
     name: "Tiezi",
     data() {
         return {
+            isEdit: this.$route.query.item,
+            Token: "",
+            ManagerUserData: { name: "123" },
             menuActivateIndex: "2",
-            
+
             //TODO: to be modified
-            postDatas: [
-                {
-                    postTitle: "帖子标题1",
+            postData: {
+                postTitle: "帖子标题1",
+                postContent: {
                     postText: "帖子内容1",
-                    postImages: {},
-                    postTime:""
-                    
-                },
-                {
-                    postTitle: "帖子标题2",
-                    postText: "帖子内容2",
-                    postImages: {},
-                    postTime:""
+                    postImages: {}
                 }
-            ]
+            },
         }
     },
     created() {
@@ -60,8 +61,7 @@ export default ({
     },
     methods: {
         editPost(item) {
-            this.$router.push({path:'/PostEdit',query:{Item:item,ManagerToken:this.Token}});
-            console.log(item)
+            this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
         },
         deletePost() {
 
@@ -78,10 +78,24 @@ export default ({
         getinfo() {
             this.$axios.post("token-get-info-url",
                 JSON.stringify(this.Token)).then((response) => {
-                    this.ManagerUserData = response.data.user;
+                    this.ManagerUserData = response.data.post;
                 });
         },
-    }
+    },
+    watch: {
+        $route: {
+            handler: function (val, oldVal) {
+                console.log(val, oldVal)
+                this.Token = this.$route.query.ManagerToken;
+                this.postData = this.$route.query.Item;
+                this.getinfo();
+                console.log(this.toplist)
+
+            },
+            immediate: true,
+            deep: true
+        }
+    },
 })
 </script>
 
