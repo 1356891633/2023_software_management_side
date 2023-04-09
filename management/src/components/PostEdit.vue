@@ -16,15 +16,20 @@
                     <el-form-item label="帖子标题">
                         <el-input v-model="postData.postTitle" placeholder=""></el-input>
                     </el-form-item>
-                    <el-form-item></el-form-item>
-                    <el-form-item v-if="isEdit">
-                        编辑
+                    <el-form-item label="帖子内容">
+                        <el-input v-model="postData.postText" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
-                    <el-form-item v-else>
-                        修改
+                    <el-form-item label="图片上传">
+                        <el-upload class="img-upload" drag multiple action="upload addr">
+                            <!-- TODO 上传地址 -->
+
+                                <i class=" el-icon-upload"></i>
+                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                        </el-upload>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                        <el-button type="primary" @click="onSubmit">保存</el-button>
                         <el-button>取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -34,7 +39,6 @@
     </el-container>
 </template>
 <script>
-
 
 export default ({
     name: "Tiezi",
@@ -48,10 +52,10 @@ export default ({
             //TODO: to be modified
             postData: {
                 postTitle: "帖子标题1",
-                postContent: {
-                    postText: "帖子内容1",
-                    postImages: {}
-                }
+
+                postText: "帖子内容1",
+                postImages: {}
+
             },
         }
     },
@@ -60,6 +64,9 @@ export default ({
         this.getinfo();
     },
     methods: {
+        onSubmit() {
+
+        },
         editPost(item) {
             this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
         },
@@ -78,7 +85,7 @@ export default ({
         getinfo() {
             this.$axios.post("token-get-info-url",
                 JSON.stringify(this.Token)).then((response) => {
-                    this.ManagerUserData = response.data.post;
+                    this.ManagerUserData = response.data.user;
                 });
         },
     },
@@ -89,7 +96,7 @@ export default ({
                 this.Token = this.$route.query.ManagerToken;
                 this.postData = this.$route.query.Item;
                 this.getinfo();
-                console.log(this.toplist)
+                console.log(this.postData)
 
             },
             immediate: true,
