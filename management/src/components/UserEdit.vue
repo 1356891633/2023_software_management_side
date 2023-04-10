@@ -12,7 +12,15 @@
             </el-menu>
         </el-aside>
         <el-main class="el-main">
-            <el-button style="width: 360px" @click="addtitle" type="primary">编辑用户信息</el-button>
+            <div class="show">
+            <p>该用户的信息:</p>
+            <p>用户名:{{toplist.user_name}}</p>
+            <p>    真实姓名:{{toplist.real_name}}</p>
+            <p>    电话号码:{{toplist.phone_number}}</p>
+            <p>    邮箱:{{toplist.email}}</p>
+            <p>    是否是管理员:{{toplist.is_admin}}</p>
+            </div>
+            <el-button style="width: 200px" @click="addtitle" type="primary">编辑用户信息</el-button>
             <el-button style="height: 40px" type="primary" @click="fan" size="small">返回</el-button>
             <el-dialog
                 title="编辑用户信息"
@@ -20,7 +28,7 @@
                 width="80%"
                 :before-close="handleClose"
             >
-            <el-input style="margin-bottom:20px" v-model="username" placeholder="请输入用户名"></el-input>
+            <el-input style="margin-bottom:20px" v-model="user_name" placeholder="请输入用户名"></el-input>
             <el-input style="margin-bottom:20px" v-model="real_name" placeholder="请输入真实姓名"></el-input>
             <el-input style="margin-bottom:20px" v-model="phone_number" placeholder="请输入手机号码"></el-input>
             <el-input style="margin-bottom:20px" v-model="email" placeholder="请输入电子邮件"></el-input>
@@ -45,7 +53,7 @@
         toplist:{},
         dialogVisible:false,
 
-        username:"",
+        user_name:"",
         real_name:"",
         phone_number:"",
         email:"",
@@ -60,7 +68,7 @@
             let data = {
             "token":this.Token,
             "user_id":this.toplist.user_id,
-            "username": this.username,
+            "user_name": this.user_name,
             "real_name": this.real_name,
             "phone_number": this.phone_number,
             "email": this.email,
@@ -110,6 +118,14 @@
   }
 
 </script>
-<style lang='' scoped>
-
+<style scoped>
+.show{
+    margin-left: 20px;
+    /* background-color: antiquewhite; */
+}
+.show p{
+    text-align: left;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:17px;
+}
 </style>

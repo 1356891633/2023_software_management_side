@@ -21,10 +21,10 @@
                 class="mian1"
               >
                 <el-card class ="el-card">
-                    <div >
-                        // show some
-                    <span @click="EditUser(item)">编辑</span>
-                    <span @click="DeleteUser(item)">删除</span>
+                    <div >  
+                        <span style="float: left;">{{ item.username }}</span>
+                    <el-button @click="EditUser(item)" class="button" type="primary">编辑</el-button>
+                    <el-button @click="DeleteUser(item)" class="button" type="danger">删除</el-button>
                     </div>
                 </el-card>
               </div>
@@ -43,7 +43,15 @@ export default ({
             Token:"",
             ManagerUserData:{name:"123"},
             menuActivateIndex:"1",
-            UserData:[],
+            //TODO
+            UserData:[
+                {
+                    username:"用户名1",
+                },
+                {
+                    username:"用户名2",
+                }
+            ],
             input:"",
 
         }
@@ -97,13 +105,20 @@ export default ({
 .el-header{
     height: 100px;
     width :100%;
-    background-color: black;
+    /* background-color: black; */
 }
 .el-aside{
-    background-color: aqua;
+    /* background-color: aqua; */
 }
 .el-main {
     float:left;
-    background-color: bisque;
+    /* background-color:rgb(245, 245, 220); */
+}
+.button{
+    float: right;
+    margin-bottom: 15px;
+}
+.el-card{
+    background-color:rgb(251, 242, 230);
 }
 </style>
