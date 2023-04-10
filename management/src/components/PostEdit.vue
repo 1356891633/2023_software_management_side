@@ -30,7 +30,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">保存</el-button>
-                        <el-button>取消</el-button>
+                        <el-button @click="changeToTiezi">取消</el-button>
                     </el-form-item>
                 </el-form>
             </el-main>
@@ -72,6 +72,9 @@ export default ({
         },
         deletePost() {
 
+        },
+        changeToTiezi(){
+            this.$router.push({path:'/Tiezi',query:this.Token})
         },
         changeToYonghu() {
             this.$router.push({ path: '/MainGround', query: this.Token })

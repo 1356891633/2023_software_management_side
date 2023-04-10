@@ -16,8 +16,8 @@
                 <el-card class="box-card" v-for="post in postDatas">
                     <div slot="header" class="clearfix">
                         <span>{{ post.postTitle }}</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="editPost(post)">编辑</el-button>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="deletePost(post)">删除</el-button>
+                        <el-button style="float: right" type="primary" @click="editPost(post)">编辑</el-button>
+                        <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
                     </div>
                     <div>
                         {{ post.postText }}
@@ -34,6 +34,8 @@ export default ({
     name: "Tiezi",
     data() {
         return {
+            Token: "",
+            ManagerUserData: { name: "123" },
             menuActivateIndex: "2",
             
             //TODO: to be modified
@@ -76,7 +78,7 @@ export default ({
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
         getinfo() {
-            this.$axios.post("token-get-info-url",
+            this.$axios.get("/api/post/table",
                 JSON.stringify(this.Token)).then((response) => {
                     this.ManagerUserData = response.data.user;
                 });
