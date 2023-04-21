@@ -7,6 +7,8 @@ import Dangan from '../components/Dangan.vue'
 import Qiuzhu from '../components/Qiuzhu.vue'
 import UserEdit from '../components/UserEdit.vue'
 import PostEdit from '../components/PostEdit.vue'
+import PostCheck from '../components/PostCheck.vue'
+
 Vue.use(Router)
 export default new Router({
   routes:[
@@ -39,5 +41,9 @@ export default new Router({
       name:"PostEdit",
       component:PostEdit
     },
+    {
+      path:'/PostCheck',
+      component:PostCheck
+    }
   ]
 })

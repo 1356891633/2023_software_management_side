@@ -12,17 +12,43 @@
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
-                <div></div>
-                <el-card class="box-card" v-for="post in postDatas">
-                    <div slot="header" class="clearfix">
-                        <span>{{ post.postTitle }}</span>
-                        <el-button style="float: right" type="primary" @click="editPost(post)">编辑</el-button>
-                        <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
-                    </div>
-                    <div>
-                        {{ post.postText }}
-                    </div>
-                </el-card>
+                <el-collapse v-model="activeNames">
+                    <el-collapse-item title="未审核帖子" name="1">
+                        <el-card class="box-card" v-for="post in unCheckedPosts">
+                            <div slot="header" class="clearfix">
+                                <span>{{ post.postTitle }}</span>
+                                <el-button style="float: right" type="primary" @click="checkPost(post)">审核</el-button>
+                                <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
+                            </div>
+                            <div>
+                                {{ post.postText }}
+                            </div>
+
+                            <div class="block" style="display: inline-block;"
+                                v-for="img in post.postImages">
+                                <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                            </div>
+                        </el-card>
+                    </el-collapse-item>
+                    <el-collapse-item title="已审核帖子" name="2">
+                        <el-card class="box-card" v-for="post in checkedPosts">
+                            <div slot="header" class="clearfix">
+                                <span>{{ post.postTitle }}</span>
+                                <el-button style="float: right" type="primary" @click="editPost(post)">编辑</el-button>
+                                <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
+                            </div>
+                            <div>
+                                {{ post.postText }}
+                            </div>
+
+                            <div class="block" style="display: inline-block; margin: 10 10 10 10;"
+                                v-for="img in post.postImages">
+                                <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                            </div>
+                        </el-card>
+                    </el-collapse-item>
+                </el-collapse>
+
             </el-main>
         </el-container>
 
@@ -37,24 +63,35 @@ export default ({
             Token: "",
             ManagerUserData: { name: "123" },
             menuActivateIndex: "2",
-            
+
             //TODO: to be modified
             postDatas: [
                 {
                     postTitle: "帖子标题1",
                     postText: "帖子内容1",
-                    postImages: {},
-                    postTime:""
-                    
+                    postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+                    postTime: "",
+                    status: "0"
+
                 },
                 {
                     postTitle: "帖子标题2",
                     postText: "帖子内容2",
-                    postImages: {},
-                    postTime:""
+                    postImages: [],
+                    postTime: "",
+                    status: "1"
                 }
-            ]
+            ],
+            activeNames:["1","2"]
         }
+    },
+    computed: {
+        checkedPosts() {
+            return this.postDatas.filter(post => post.status == 1)
+        },
+        unCheckedPosts() {
+            return this.postDatas.filter(post => post.status == 0)
+        },
     },
     created() {
         this.Token = this.$query;
@@ -62,8 +99,11 @@ export default ({
     },
     methods: {
         editPost(item) {
-            this.$router.push({path:'/PostEdit',query:{Item:item,ManagerToken:this.Token}});
+            this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
             console.log(item)
+        },
+        checkPost(item) {
+            this.$router.push({ path: '/PostCheck', query: { Item: item, ManagerToken: this.Token } });
         },
         deletePost() {
 

@@ -20,10 +20,11 @@
                         <el-input v-model="postData.postText" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
                     <el-form-item label="图片">
-                        <div style="display: inline-block;" v-for="img in postData.postImages">
+                        <div v-for="img in postData.postImages">
                             <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                         </div>
                     </el-form-item>
+                        
                     
                     <el-form-item label="图片上传">
                         <el-upload class="img-upload" drag multiple action="upload addr">
@@ -35,7 +36,8 @@
                         </el-upload>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">保存</el-button>
+                        <el-button type="primary" @click="onSubmit">通过</el-button>
+                        <el-button type="danger" @click="refusePost">拒绝</el-button>
                         <el-button @click="changeToTiezi">取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -78,6 +80,9 @@ export default ({
             this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
         },
         deletePost() {
+
+        },
+        refusePost() {
 
         },
         changeToTiezi(){
