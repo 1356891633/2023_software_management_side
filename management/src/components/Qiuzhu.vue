@@ -14,7 +14,47 @@
             <el-main>
                 <el-collapse v-model="activeNames">
                     <el-collapse-item title="求助信息" name="1">
+                        <el-card class="box-card" v-for="post in helpPosts">
+                            <div class="clearfix">
+                                <span>{{ post.postTitle }}</span>
+                                <el-button style="float: right" type="primary" @click="viewHelpPost(post)">查看</el-button>
+                                <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
+                            </div>
+                            <el-dialog title="默认标题" :visible.sync="dialogVisible" width="70%" :before-close="handleClose"
+                                show-close="false">
+                                <span slot="title">{{ activeHelpPost.postTitle }}</span>
+                                <div>{{ activeHelpPost.postText }}</div>
+                                <div style="display: inline-block;" v-for="img in activeHelpPost.postImages">
+                                    <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                                </div>
+                                <span slot="footer" class="dialog-footer">
+                                    <el-button @click="dialogVisible = false">关闭</el-button>
+                                </span>
 
+                                <el-divider></el-divider>
+
+                                <el-form ref="form" :model="helpForm" label-width="80px">
+
+                                    <el-form-item>
+                                        <el-col :span="16" :offset="2">
+                                            <el-input type="textarea" autosize placeholder="请输入回复"></el-input>
+                                        </el-col>
+                                        <el-col :span="4">
+                                            <el-button type="primary" @click="sendComment">发送回复</el-button>
+                                        </el-col>
+                                    </el-form-item>
+                                    <el-form-item>
+                                        <el-col :span="8" :offset="8">
+                                        <el-radio-group v-model="helpForm.helpPostStatus" @change="updateStatus">
+                                            <el-radio-button label="1">状态1</el-radio-button>
+                                            <el-radio-button label="2">状态2</el-radio-button>
+                                            <el-radio-button label="3">状态3</el-radio-button>
+                                        </el-radio-group>
+                                        </el-col>
+                                    </el-form-item>
+                                </el-form>
+                            </el-dialog>
+                        </el-card>
                     </el-collapse-item>
                 </el-collapse>
             </el-main>
@@ -30,6 +70,30 @@ export default ({
         return {
             ManagerUserData: {},
             menuActivateIndex: "4",
+            activeNames: ["1"],
+            dialogVisible: false,
+            helpPosts: [
+                {
+                    postTitle: "帖子标题1",
+                    postText: "帖子内容1",
+                    postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+                    postTime: "",
+                    status: "1"
+
+                },
+                {
+                    postTitle: "帖子标题2",
+                    postText: "帖子内容2",
+                    postImages: [],
+                    postTime: "",
+                    status: "1"
+                }
+            ],
+            activeHelpPost: "",
+            helpForm: {
+                comment: "",
+                helpPostStatus: ""
+            }
         }
     },
     created() {
@@ -37,7 +101,16 @@ export default ({
         this.getinfo();
     },
     methods: {
+        updateStatus(val) {
+            alert(val)
+        },
+        viewHelpPost(post) {
+            this.dialogVisible = true
+            this.activeHelpPost = post
+        },
+        deletePost(item) {
 
+        },
         changeToTiezi() {
             this.$router.push({ path: '/Tiezi', query: this.Token })
         },
