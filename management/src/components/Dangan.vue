@@ -87,8 +87,8 @@
                                     </el-form-item>
                                     <el-form-item label="动物性别" prop="sex">
                                         <el-radio-group v-model="createForm.animal_sex">
-                                            <el-radio :label="雄性" border>雄性</el-radio>
-                                            <el-radio :label="雌性" border>雌性</el-radio>
+                                            <el-radio :label=0 border>雄性</el-radio>
+                                            <el-radio :label=1 border>雌性</el-radio>
                                         </el-radio-group>
                                     </el-form-item>
                                     <el-form-item label="动物描述" prop=content>
@@ -122,7 +122,7 @@
                     <el-collapse-item title="流浪动物领养申请" name="2">
                         <el-card class="box-card" v-for="req in animalAdoptRequests">
                             <div class="clearfix">
-                                <span>{{ req.user_id }} 于{{ req.app_time }} 申请领养 {{ req.animal_id }} </span>
+                                <span>有关申请领养 {{ getAnimalName( req.animal_id )}} </span>
                                 <el-button style="float: right" type="primary" @click="viewRequest(req)">详情</el-button>
                             </div>
                         </el-card>
@@ -174,30 +174,8 @@ export default ({
             innerEditVisible: false,
             viewReqVisible: false,
             activeArchive: "",
-            animalArchives: [
-                {
-                    animal_id: "1",
-                    animal_name: "动物名字1",
-                    animal_sex: "雄性",
-                    status: "0",
-                    content: "动物描述1",
-                },
-                {
-                    animal_id: "2",
-                    animal_name: "动物名字2",
-                    animal_sex: "雌性",
-                    status: "1",
-                    content: "动物描述2",
-                }
-            ],
-            animalAdoptRequests: [
-                {
-                    animal_id: "1",
-                    user_id: "1",
-                    app_time: "2020-01-01",
-                    app_content: "申请内容"
-                }
-            ],
+            animalArchives: [],
+            animalAdoptRequests: [],
             createForm: {
                 animal_sex: "",
                 content: "",
@@ -209,7 +187,6 @@ export default ({
         }
     },
     created() {
-        this.Token = this.$query;
         this.getAnimalArchive();
         this.getReq();
     },
@@ -222,9 +199,22 @@ export default ({
                     return "雌性"
                 }
             }
+        },
+        curAnimalName() {
+            return (animal_id) => {
+                console.log(this.animalArchives.filter(archive => archive.animal_id === animal_id).at(0))
+                return this.animalArchives.filter(archive => archive.animal_id === animal_id).at(0)
+            }
         }
     },
     methods: {
+        getAnimalName(animal_id) {
+            console.log(this.animalArchives)
+            let idx = this.animalArchives.findIndex(archive => archive.animal_id == animal_id)
+            let temp_archive = this.animalArchives[idx]
+            console.log(temp_archive)
+            return temp_archive.animal_name
+        },
         getAnimalArchive() {
             this.$axios.get('/api/animal/table', {
                 params: {
@@ -241,8 +231,19 @@ export default ({
 
             );
         },
+        getReqUser(user_id) {
+            // this.$axios.get('/api/user/info',{})
+        },
         getReq() {
-
+            this.$axios.get('/api/animal/adopt/table',{
+                params:{
+                    page:1,
+                    limit:100,
+                    sort:"created_at"
+                }
+            }).then((response)=> {
+                this.animalAdoptRequests = response.data.data.adopts;
+            })
         },
         refuseReq() {
             this.viewReqVisible = false;
@@ -315,8 +316,6 @@ export default ({
 
         }
     },
-    mounted() {
-    }
 })
 </script>
 
