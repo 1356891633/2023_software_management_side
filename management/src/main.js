@@ -5,10 +5,13 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './css/global.css'
+import axios from 'axios'
+
+Vue.prototype.$axios = axios
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-axios.default.baseURL="http://114.116.211.146:8080"
+
 new Vue({
   router,
   store,

@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "element-ui": "^2.15.13"
+    "element-ui": "^2.15.13",
+    "vue-axios": "^3.5.2"
   },
   "name": "2023_software_management_side",
   "description": "",

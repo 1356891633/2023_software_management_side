@@ -177,7 +177,7 @@
       userLogin() {
         this.$refs["loginUser"].validate((valid) => {
           if (valid) {
-            this.$axios.post("http://114.116.211.142:8080/api/user/login", JSON.stringify(this.loginUser)).then(response => {
+            this.$axios.post("/api/user/login", JSON.stringify(this.loginUser)).then(response => {
               if (response.code==200) {
                 this.$message({
                   message: "登录成功！",
