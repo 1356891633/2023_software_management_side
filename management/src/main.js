@@ -8,7 +8,7 @@ import './css/global.css'
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-
+axios.default.baseURL="http://114.116.211.146:8080"
 new Vue({
   router,
   store,
