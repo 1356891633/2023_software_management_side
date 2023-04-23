@@ -12,8 +12,11 @@
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
+                <h>{{ postData.title }}</h>
+                <el-divider></el-divider>
+                <p>{{ postData.content }}</p>
                 <el-form ref="form" :model="postData" label-width="80px">
-                    <el-form-item label="帖子标题">
+                    <!-- <el-form-item label="帖子标题">
                         <el-input v-model="postData.title" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="帖子内容">
@@ -28,13 +31,13 @@
 
                     <el-form-item label="图片上传">
                         <el-upload class="img-upload" drag multiple action="upload addr">
-                            <!-- TODO 上传地址 -->
+                            
 
                             <i class=" el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                         </el-upload>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item>
                         <el-button type="primary" @click="auditPost(true)">通过</el-button>
                         <el-button type="danger" @click="auditPost(false)">拒绝</el-button>

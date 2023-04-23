@@ -88,7 +88,7 @@ export default ({
     },
     computed: {
         checkedPosts() {
-            return this.postDatas.filter(post => post.status == 1)
+            return this.postDatas.filter(post => post.status == 2)
         },
         unCheckedPosts() {
             return this.postDatas.filter(post => post.status == 0)

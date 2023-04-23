@@ -89,7 +89,7 @@ export default {
     },
     ChangeToAdmin(item) {
       console.log("change");
-      this.$axios.patch("/api/update/grant", {
+      this.$axios.patch("/api/user/update/grant", {
         headers: {
           Authorization: `Bearer ${localStorage.jwt}`,
         },

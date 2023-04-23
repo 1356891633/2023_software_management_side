@@ -72,7 +72,15 @@ export default ({
     },
     methods: {
         onSubmit() {
+            this.$axios.post('/api/post/update',{
 
+            }).then((response) => {
+
+            }).catch(
+
+            ).then(
+
+            );
         },
         editPost(item) {
             this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
