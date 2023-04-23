@@ -65,23 +65,6 @@ export default ({
 
             //TODO: to be modified
             postDatas: [
-                {
-                    post_id:1,
-                    title: "帖子标题1",
-                    content: "帖子内容1",
-                    pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
-                    postTime: "",
-                    status: "0"
-
-                },
-                {
-                    post_id:2,
-                    title: "帖子标题2",
-                    content: "帖子内容2",
-                    pics: [],
-                    postTime: "",
-                    status: "1"
-                }
             ],
             activeNames: ["1", "2"]
         }
@@ -95,7 +78,9 @@ export default ({
         },
     },
     created() {
-        this.Token = this.$query;
+        // this.Token = this.$query;
+        console.log('create')
+        this.getPosts();
         this.getPosts();
     },
     methods: {
