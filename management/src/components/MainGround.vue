@@ -57,13 +57,14 @@ export default ({
         }
     },
     created() {
-        this.Token=this.$query;
+        this.Token=this.$query.Token;
+        console.log(this.Token)
         this.getinfo();
     },
     methods:{
         EditUser(item){
             this.$router.push({path:'/UserEdit',query:{Item:item,ManagerToken:this.Token}});
-        },
+        },  //TODO
         DeleteUser(item){
             this.$axios.post('delete_item_url',item).then(res=>
             {
@@ -77,7 +78,7 @@ export default ({
         SearchUser(){
 
         },
-        getdata(){  //得到用户信息
+        getdata(){  //TODO
             this.$axios.post("get-user-info-url").then(response =>{
                 this.UserData=response; //
             });
