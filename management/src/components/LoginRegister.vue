@@ -150,9 +150,10 @@
     },
     methods: {
       getinfo(){
-        this.$axios.post("http://114.116.211.142:8080/api/user/info",
+        this.$axios.post("/api/user/info",
             JSON.stringify(this.Token)).then((response) => {
                 this.ManagerUserData=response.data.user;
+                localStorage.ManagerUserData = response.data.user;//?
         });
         },
       changeToFind() {
@@ -185,6 +186,7 @@
                   type: "success"
                 });
                 this.Token=response.data.token;
+                localStorage.jwt = response.data.token;
                 this.getinfo();
                 setTimeout(() => {
                   this.$router.push({path:'/themepost',query:this.Token});
