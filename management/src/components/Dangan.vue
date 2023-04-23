@@ -206,6 +206,9 @@ export default ({
         this.getinfo();
     },
     methods: {
+        getReqInfo() {
+
+        },
         refuseReq() {
             this.viewReqVisible = false;
         },
@@ -242,9 +245,11 @@ export default ({
         changeToQiuzhu() {
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
+        getinfo() {
+
+        }
     },
     mounted() {
-        this.$refs.dialog.rendered = true
     }
 })
 </script>

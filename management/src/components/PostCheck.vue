@@ -36,8 +36,8 @@
                         </el-upload>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">通过</el-button>
-                        <el-button type="danger" @click="refusePost">拒绝</el-button>
+                        <el-button type="primary" @click="passPost()">通过</el-button>
+                        <el-button type="danger" @click="refusePost()">拒绝</el-button>
                         <el-button @click="changeToTiezi">取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -73,7 +73,7 @@ export default ({
         this.getinfo();
     },
     methods: {
-        onSubmit() {
+        passPost() {
 
         },
         editPost(item) {
@@ -98,10 +98,6 @@ export default ({
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
         getinfo() {
-            this.$axios.post("token-get-info-url",
-                JSON.stringify(this.Token)).then((response) => {
-                    this.ManagerUserData = response.data.user;
-                });
         },
     },
     watch: {

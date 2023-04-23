@@ -20,8 +20,8 @@
                                 <el-button style="float: right" type="primary" @click="viewHelpPost(post)">查看</el-button>
                                 <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
                             </div>
-                            <el-dialog title="默认标题" :visible.sync="dialogVisible" width="70%" :before-close="handleClose"
-                                show-close="false">
+                            <el-dialog title="默认标题" :visible.sync="dialogVisible" width="70%"
+                                show-close>
                                 <span slot="title">{{ activeHelpPost.postTitle }}</span>
                                 <div>{{ activeHelpPost.postText }}</div>
                                 <div style="display: inline-block;" v-for="img in activeHelpPost.postImages">
@@ -40,7 +40,7 @@
                                             <el-input type="textarea" autosize placeholder="请输入回复"></el-input>
                                         </el-col>
                                         <el-col :span="4">
-                                            <el-button type="primary" @click="sendComment">发送回复</el-button>
+                                            <el-button type="primary" @click="sendComment()">发送回复</el-button>
                                         </el-col>
                                     </el-form-item>
                                     <el-form-item>
@@ -101,6 +101,9 @@ export default ({
         this.getinfo();
     },
     methods: {
+        sendComment() {
+
+        },
         updateStatus(val) {
             alert(val)
         },
@@ -120,6 +123,9 @@ export default ({
         changeToYonghu() {
             this.$router.push({ path: '/MainGround', query: this.Token })
         },
+        getinfo() {
+
+        }
     }
 })
 </script>

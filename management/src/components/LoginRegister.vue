@@ -150,10 +150,10 @@
     },
     methods: {
       getinfo(){
-        this.$axios.post("/api/user/info",
+        this.$axios.post("/user/info",
             JSON.stringify(this.Token)).then((response) => {
-                this.ManagerUserData=response.data.user;
-                localStorage.ManagerUserData = response.data.user;//?
+                this.ManagerUserData=response.data.data.user;
+                localStorage.user_id = response.data.data.user;//?
         });
         },
       changeToFind() {
@@ -180,16 +180,17 @@
           if (valid) {
             console.log("111");
             this.$axios.post("/api/user/login", JSON.stringify({phone_number:this.loginUser.user_id,password:this.loginUser.user_password})).then(response => {
-              if (response.code==200) {
+              if (response.data.code==200) {
                 this.$message({
                   message: "登录成功！",
                   type: "success"
                 });
-                this.Token=response.data.token;
-                localStorage.jwt = response.data.token;
+                this.Token=response.data.data.token;
+                localStorage.jwt = response.data.data.token;
                 this.getinfo();
+                console.log("jump")
                 setTimeout(() => {
-                  this.$router.push({path:'/themepost',query:this.Token});
+                  this.$router.push({path:'/MainGround',query:this.Token});
                 }, 500);
               } else {  //error message
                 

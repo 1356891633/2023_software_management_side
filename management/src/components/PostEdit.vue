@@ -93,10 +93,6 @@ export default ({
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
         getinfo() {
-            this.$axios.post("token-get-info-url",
-                JSON.stringify(this.Token)).then((response) => {
-                    this.ManagerUserData = response.data.user;
-                });
         },
     },
     watch: {
