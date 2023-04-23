@@ -72,14 +72,22 @@ export default ({
     },
     methods: {
         onSubmit() {
-            this.$axios.post('/api/post/update',{
-
+            let updateData = {
+                user_id: Number(localStorage.user_id),
+                post_id: this.postData.post_id,
+                title:this.postData.title,
+                content:this.postData.content
+            }
+            this.$axios.post('/api/post/update',updateData,{
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
+                }
             }).then((response) => {
 
             }).catch(
 
             ).then(
-
+                this.changeToTiezi()
             );
         },
         editPost(item) {
