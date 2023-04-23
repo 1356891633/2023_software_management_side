@@ -150,9 +150,10 @@
     },
     methods: {
       getinfo(){
-        this.$axios.post("http://114.116.211.142:8080/api/user/info",
+        this.$axios.post("/user/info",
             JSON.stringify(this.Token)).then((response) => {
-                this.ManagerUserData=response.data.user;
+                this.ManagerUserData=response.data.data.user;
+                localStorage.user_id = response.data.data.user;//?
         });
         },
       changeToFind() {
@@ -178,17 +179,17 @@
         this.$refs["loginUser"].validate((valid) => {
           if (valid) {
             this.$axios.post("/api/user/login", JSON.stringify({phone_number:this.loginUser.user_id,password:this.loginUser.user_password})).then(response => {
-              console.log(response.status)
-              if (response.data.code=="200") {
+              if (response.data.code==200) {
                 this.$message({
                   message: "登录成功！",
                   type: "success"
                 });
                 this.Token=response.data.data.token;
-                this.getinfo()
-                console.log("222")
+                localStorage.jwt = response.data.data.token;
+                this.getinfo();
+                console.log("jump")
                 setTimeout(() => {
-                  this.$router.push({path:'/mainground',query:{Token:this.Token}});
+                  this.$router.push({path:'/MainGround',query:this.Token});
                 }, 500);
               } else {  //error message
                 

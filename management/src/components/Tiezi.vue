@@ -16,16 +16,15 @@
                     <el-collapse-item title="未审核帖子" name="1">
                         <el-card class="box-card" v-for="post in unCheckedPosts">
                             <div slot="header" class="clearfix">
-                                <span>{{ post.postTitle }}</span>
+                                <span>{{ post.title }}</span>
                                 <el-button style="float: right" type="primary" @click="checkPost(post)">审核</el-button>
                                 <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
                             </div>
                             <div>
-                                {{ post.postText }}
+                                {{ post.content }}
                             </div>
 
-                            <div class="block" style="display: inline-block;"
-                                v-for="img in post.postImages">
+                            <div class="block" style="display: inline-block;" v-for="img in post.postImages">
                                 <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                             </div>
                         </el-card>
@@ -33,12 +32,12 @@
                     <el-collapse-item title="已审核帖子" name="2">
                         <el-card class="box-card" v-for="post in checkedPosts">
                             <div slot="header" class="clearfix">
-                                <span>{{ post.postTitle }}</span>
+                                <span>{{ post.title }}</span>
                                 <el-button style="float: right" type="primary" @click="editPost(post)">编辑</el-button>
                                 <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
                             </div>
                             <div>
-                                {{ post.postText }}
+                                {{ post.content }}
                             </div>
 
                             <div class="block" style="display: inline-block; margin: 10 10 10 10;"
@@ -67,22 +66,24 @@ export default ({
             //TODO: to be modified
             postDatas: [
                 {
-                    postTitle: "帖子标题1",
-                    postText: "帖子内容1",
+                    post_id:1,
+                    title: "帖子标题1",
+                    content: "帖子内容1",
                     postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
                     postTime: "",
                     status: "0"
 
                 },
                 {
-                    postTitle: "帖子标题2",
-                    postText: "帖子内容2",
+                    post_id:2,
+                    title: "帖子标题2",
+                    content: "帖子内容2",
                     postImages: [],
                     postTime: "",
                     status: "1"
                 }
             ],
-            activeNames:["1","2"]
+            activeNames: ["1", "2"]
         }
     },
     computed: {
@@ -95,7 +96,7 @@ export default ({
     },
     created() {
         this.Token = this.$query;
-        this.getinfo();
+        this.getPosts();
     },
     methods: {
         editPost(item) {
@@ -105,8 +106,17 @@ export default ({
         checkPost(item) {
             this.$router.push({ path: '/PostCheck', query: { Item: item, ManagerToken: this.Token } });
         },
-        deletePost() {
+        deletePost(post) {
+            this.$axios.delete("/api/post",{
+                data:{
+                    post_id:post.post_id,
+                    user_id:localStorage.ManagerUserData.user_id//?
+                }
+            }).then((response) => {
 
+            }).catch((response) => {
+                
+            });
         },
         changeToYonghu() {
             this.$router.push({ path: '/MainGround', query: this.Token })
@@ -117,11 +127,22 @@ export default ({
         changeToQiuzhu() {
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
-        getinfo() {
-            this.$axios.get("/api/post/table",
-                JSON.stringify(this.Token)).then((response) => {
-                    this.ManagerUserData = response.data.user;
-                });
+        getPosts() {
+            this.$axios.get("/api/post/table", {
+                params: {
+                    page: 1,
+                    limit: 100,
+                    sort: "created_at"
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
+                }
+            }).then((response) => {
+                console.log(response.data)
+                this.postDatas = response.data.data.posts;
+            }).catch((response) => {
+
+            });
         },
     }
 })

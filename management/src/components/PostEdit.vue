@@ -14,10 +14,10 @@
             <el-main class="el-main">
                 <el-form ref="form" :model="postData" label-width="80px">
                     <el-form-item label="帖子标题">
-                        <el-input v-model="postData.postTitle" placeholder=""></el-input>
+                        <el-input v-model="postData.title" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="帖子内容">
-                        <el-input v-model="postData.postText" type="textarea" :rows="10" autosize></el-input>
+                        <el-input v-model="postData.content" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
                     <el-form-item label="图片">
                         <div style="display: inline-block;" v-for="img in postData.postImages">
@@ -57,9 +57,9 @@ export default ({
 
             //TODO: to be modified
             postData: {
-                postTitle: "帖子标题1",
+                title: "帖子标题1",
 
-                postText: "帖子内容1",
+                content: "帖子内容1",
                 postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
                             ]
 
@@ -93,10 +93,6 @@ export default ({
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
         getinfo() {
-            this.$axios.post("token-get-info-url",
-                JSON.stringify(this.Token)).then((response) => {
-                    this.ManagerUserData = response.data.user;
-                });
         },
     },
     watch: {

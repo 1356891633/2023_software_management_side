@@ -58,7 +58,7 @@
                             <div class="clearfix">
                                 <span>{{ archive.name }}</span>
                                 <el-button style="float: right" type="primary"
-                                    @click="openEditArchive(archive)">编辑</el-button>
+                                    @click="openEditArchive(archive)">详情</el-button>
                                 <el-button style="float: right" type="danger" @click="deleteArchive(archive)">删除</el-button>
                             </div>
                         </el-card>
@@ -105,7 +105,7 @@
                                 </el-form-item> -->
                                     <el-form-item>
                                         <el-button type="primary" @click="editArchive()">编辑</el-button>
-                                        <el-button @click="editVisible = false">取消</el-button>
+                                        <el-button @click="innerEditVisible = false">取消</el-button>
                                     </el-form-item>
                                 </el-form>
                             </el-dialog>
@@ -206,6 +206,9 @@ export default ({
         this.getinfo();
     },
     methods: {
+        getReqInfo() {
+
+        },
         refuseReq() {
             this.viewReqVisible = false;
         },
@@ -220,6 +223,7 @@ export default ({
             this.editVisible = false;
         },
         deleteArchive() {
+            this.$axios.delete('/api/')
 
         },
         createArchive() {
@@ -241,9 +245,11 @@ export default ({
         changeToQiuzhu() {
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
+        getinfo() {
+
+        }
     },
     mounted() {
-        this.$refs.dialog.rendered = true
     }
 })
 </script>
