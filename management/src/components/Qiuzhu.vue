@@ -16,15 +16,15 @@
                     <el-collapse-item title="求助信息" name="1">
                         <el-card class="box-card" v-for="post in helpPosts">
                             <div class="clearfix">
-                                <span>{{ post.postTitle }}</span>
+                                <span>{{ post.title }}</span>
                                 <el-button style="float: right" type="primary" @click="viewHelpPost(post)">查看</el-button>
                                 <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
                             </div>
                             <el-dialog title="默认标题" :visible.sync="dialogVisible" width="70%"
                                 show-close>
-                                <span slot="title">{{ activeHelpPost.postTitle }}</span>
-                                <div>{{ activeHelpPost.postText }}</div>
-                                <div style="display: inline-block;" v-for="img in activeHelpPost.postImages">
+                                <span slot="title">{{ activeHelpPost.title }}</span>
+                                <div>{{ activeHelpPost.content }}</div>
+                                <div style="display: inline-block;" v-for="img in activeHelpPost.pics">
                                     <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                                 </div>
                                 <span slot="footer" class="dialog-footer">
@@ -74,17 +74,17 @@ export default ({
             dialogVisible: false,
             helpPosts: [
                 {
-                    postTitle: "帖子标题1",
-                    postText: "帖子内容1",
-                    postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+                    title: "帖子标题1",
+                    content: "帖子内容1",
+                    pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
                     postTime: "",
                     status: "1"
 
                 },
                 {
-                    postTitle: "帖子标题2",
-                    postText: "帖子内容2",
-                    postImages: [],
+                    title: "帖子标题2",
+                    content: "帖子内容2",
+                    pics: [],
                     postTime: "",
                     status: "1"
                 }
@@ -98,7 +98,7 @@ export default ({
     },
     created() {
         this.Token = this.$query;
-        this.getinfo();
+        this.getHelpPosts();
     },
     methods: {
         sendComment() {
@@ -123,8 +123,22 @@ export default ({
         changeToYonghu() {
             this.$router.push({ path: '/MainGround', query: this.Token })
         },
-        getinfo() {
+        getHelpPosts() {
+            this.$axios.get("/api/post/help", {
+                params: {
+                    page: 1,
+                    limit: 100,
+                    sort: "created_at"
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
+                }
+            }).then((response) => {
+                console.log(response.data)
+                this.helpPosts = response.data.data.posts;
+            }).catch((response) => {
 
+            });
         }
     }
 })

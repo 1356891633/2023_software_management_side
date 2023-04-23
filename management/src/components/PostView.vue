@@ -12,9 +12,9 @@
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
-                <el-page-header @back="goBack" content="postData.postTitle"></el-page-header>
-                <span>{{psotData.postText}}</span>
-                <div v-for="img in postData.postImages">
+                <el-page-header @back="goBack" content="postData.title"></el-page-header>
+                <span>{{psotData.content}}</span>
+                <div v-for="img in postData.pics">
                     <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                 </div>
                 
@@ -36,10 +36,10 @@
 
                 //TODO: to be modified
                 postData: {
-                    postTitle: "帖子标题1",
+                    title: "帖子标题1",
 
-                    postText: "帖子内容1",
-                    postImages: []
+                    content: "帖子内容1",
+                    pics: []
 
                 },
             }

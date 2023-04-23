@@ -20,24 +20,24 @@
                         <el-input v-model="postData.content" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
                     <el-form-item label="图片">
-                        <div v-for="img in postData.postImages">
+                        <div v-for="img in postData.pics">
                             <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                         </div>
                     </el-form-item>
-                        
-                    
+
+
                     <el-form-item label="图片上传">
                         <el-upload class="img-upload" drag multiple action="upload addr">
                             <!-- TODO 上传地址 -->
 
-                                <i class=" el-icon-upload"></i>
+                            <i class=" el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                         </el-upload>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="passPost()">通过</el-button>
-                        <el-button type="danger" @click="refusePost()">拒绝</el-button>
+                        <el-button type="primary" @click="auditPost(true)">通过</el-button>
+                        <el-button type="danger" @click="auditPost(false)">拒绝</el-button>
                         <el-button @click="changeToTiezi">取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -62,8 +62,8 @@ export default ({
                 title: "帖子标题1",
 
                 content: "帖子内容1",
-                postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
-                            ]
+                pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+                ]
 
             },
         }
@@ -73,7 +73,18 @@ export default ({
         this.getinfo();
     },
     methods: {
-        passPost() {
+        auditPost(passFlag) {
+            let auditData = {
+
+            }
+            this.$axios.patch('/api/post/audit',auditData
+            ).then((response) => {
+
+            }).catch(
+
+            ).then(
+
+            );
 
         },
         editPost(item) {
@@ -82,11 +93,9 @@ export default ({
         deletePost() {
 
         },
-        refusePost() {
 
-        },
-        changeToTiezi(){
-            this.$router.push({path:'/Tiezi',query:this.Token})
+        changeToTiezi() {
+            this.$router.push({ path: '/Tiezi', query: this.Token })
         },
         changeToYonghu() {
             this.$router.push({ path: '/MainGround', query: this.Token })

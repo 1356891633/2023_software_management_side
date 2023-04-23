@@ -20,7 +20,7 @@
                         <el-input v-model="postData.content" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
                     <el-form-item label="图片">
-                        <div style="display: inline-block;" v-for="img in postData.postImages">
+                        <div style="display: inline-block;" v-for="img in postData.pics">
                             <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                         </div>
                     </el-form-item>
@@ -60,7 +60,7 @@ export default ({
                 title: "帖子标题1",
 
                 content: "帖子内容1",
-                postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+                pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
                             ]
 
             },
