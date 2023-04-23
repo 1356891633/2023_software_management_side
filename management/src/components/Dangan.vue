@@ -122,11 +122,11 @@
                     <el-collapse-item title="流浪动物领养申请" name="2">
                         <el-card class="box-card" v-for="req in animalAdoptRequests">
                             <div class="clearfix">
-                                <span>有关申请领养 {{ getAnimalName( req.animal_id )}} </span>
+                                <span>{{ req.user_id }}有关申请领养 {{ getAnimalName(req.animal_id) }} </span>
                                 <el-button style="float: right" type="primary" @click="viewRequest(req)">详情</el-button>
                             </div>
                         </el-card>
-                        <el-dialog title="动物领养申请" :visible.sync="viewReqVisible" width="70%" @open="getReqInfo(req)">
+                        <el-dialog title="动物领养申请" :visible.sync="viewReqVisible" width="70%" @open="getReqInfo()">
                             <el-row>
                                 <el-col :span="12">
                                     <div>
@@ -200,19 +200,22 @@ export default ({
                 }
             }
         },
-        curAnimalName() {
-            return (animal_id) => {
-                console.log(this.animalArchives.filter(archive => archive.animal_id === animal_id).at(0))
-                return this.animalArchives.filter(archive => archive.animal_id === animal_id).at(0)
-            }
-        }
+        // curAnimalName() {
+        //     return (animal_id) => {
+        //         console.log(this.animalArchives.filter(archive => archive.animal_id === animal_id).at(0))
+        //         return this.animalArchives.filter(archive => archive.animal_id === animal_id).at(0)
+        //     }
+        // }
     },
     methods: {
-        getAnimalName(animal_id) {
-            console.log(this.animalArchives)
-            let idx = this.animalArchives.findIndex(archive => archive.animal_id == animal_id)
+        getAnimalName(cur_animal_id) {
+            // console.log(this.animalArchives)
+            let idx = this.animalArchives.findIndex(archive => Number(archive.animal_id) == Number(cur_animal_id))
             let temp_archive = this.animalArchives[idx]
             console.log(temp_archive)
+            if(temp_archive) {
+                return temp_archive.animal_name
+            }
             return temp_archive
         },
         getAnimalArchive() {
@@ -221,9 +224,12 @@ export default ({
                     page: 1,
                     limit: 100,
                     sort: "created_at"
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
                 }
             }).then((response) => {
-                console.log(response.data.data);
+                // console.log(response.data.data);
                 this.animalArchives = response.data.data.animals;
             }).catch(
 
@@ -231,8 +237,8 @@ export default ({
 
             );
         },
-        getReqUser(user_id) {
-            // this.$axios.get('/api/user/info',{})
+        getReqInfo() {
+            
         },
         getReq() {
             this.$axios.get('/api/animal/adopt/table',{
@@ -240,6 +246,9 @@ export default ({
                     page:1,
                     limit:100,
                     sort:"created_at"
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
                 }
             }).then((response)=> {
                 this.animalAdoptRequests = response.data.data.adopts;
@@ -299,10 +308,35 @@ export default ({
         resetForm(formRef) {
             // this.$refs[formRef].resetFields()
         },
-        viewRequest() {
+        viewRequest(req) {
             this.viewReqVisible = true;
-        }
-        ,
+
+            let idx = this.animalArchives.findIndex(archive => Number(archive.animal_id) == Number(req.animal_id))
+            let temp_archive = this.animalArchives[idx]
+
+            this.reqAnimal = temp_archive
+            console.log("thatReq")
+            console.log(req)
+            this.$axios.get('/api/user/table',{
+                params:{
+                    page:1,
+                    limit:100,
+                    sort:"created_at"
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
+                }
+            }).then((response) => {
+                let tempUserList = response.data.data.users;
+                let userIdx = tempUserList.findIndex(user => Number(user.user_id) === Number(req.user_id))
+                let thatUser = tempUserList[userIdx]
+                console.log("thatUser")
+                console.log(thatUser)
+                this.reqUser = thatUser
+            })
+
+        },
+
         changeToTiezi() {
             this.$router.push({ path: '/Tiezi', query: this.Token })
         },
