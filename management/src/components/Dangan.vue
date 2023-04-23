@@ -213,7 +213,7 @@ export default ({
             let idx = this.animalArchives.findIndex(archive => archive.animal_id == animal_id)
             let temp_archive = this.animalArchives[idx]
             console.log(temp_archive)
-            return temp_archive.animal_name
+            return temp_archive
         },
         getAnimalArchive() {
             this.$axios.get('/api/animal/table', {
@@ -221,6 +221,9 @@ export default ({
                     page: 1,
                     limit: 100,
                     sort: "created_at"
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
                 }
             }).then((response) => {
                 console.log(response.data.data);
