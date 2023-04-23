@@ -221,9 +221,6 @@ export default ({
                     page: 1,
                     limit: 100,
                     sort: "created_at"
-                },
-                headers: {
-                    'Authorization': `Bearer ${localStorage.jwt}`
                 }
             }).then((response) => {
                 console.log(response.data.data);
