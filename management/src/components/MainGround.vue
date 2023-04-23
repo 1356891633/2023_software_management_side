@@ -57,8 +57,7 @@ export default ({
         }
     },
     created() {
-        this.Token=this.$query;
-        this.getinfo();
+        // this.Token=this.$query;
     },
     methods:{
         EditUser(item){

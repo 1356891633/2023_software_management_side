@@ -24,7 +24,7 @@
                                 {{ post.content }}
                             </div>
 
-                            <div class="block" style="display: inline-block;" v-for="img in post.postImages">
+                            <div class="block" style="display: inline-block;" v-for="img in post.pics">
                                 <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                             </div>
                         </el-card>
@@ -41,7 +41,7 @@
                             </div>
 
                             <div class="block" style="display: inline-block; margin: 10 10 10 10;"
-                                v-for="img in post.postImages">
+                                v-for="img in post.pics">
                                 <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                             </div>
                         </el-card>
@@ -69,7 +69,7 @@ export default ({
                     post_id:1,
                     title: "帖子标题1",
                     content: "帖子内容1",
-                    postImages: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+                    pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
                     postTime: "",
                     status: "0"
 
@@ -78,7 +78,7 @@ export default ({
                     post_id:2,
                     title: "帖子标题2",
                     content: "帖子内容2",
-                    postImages: [],
+                    pics: [],
                     postTime: "",
                     status: "1"
                 }

@@ -150,10 +150,14 @@
     },
     methods: {
       getinfo(){
-        this.$axios.post("/user/info",
-            JSON.stringify(this.Token)).then((response) => {
+        this.$axios.get("/api/user/info",{
+          headers:{
+            Authorization: `Bearer ${localStorage.jwt}`
+          }
+        }).then((response) => {
                 this.ManagerUserData=response.data.data.user;
-                localStorage.user_id = response.data.data.user;//?
+                console.log(response.data.data.user);
+                localStorage.user_id = response.data.data.user.user_id;//?
         });
         },
       changeToFind() {
