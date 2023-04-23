@@ -75,15 +75,27 @@ export default ({
     methods: {
         auditPost(passFlag) {
             let auditData = {
-
+                user_id:Number(localStorage.user_id),
+                post_id:this.postData.post_id,
+                opt:""
             }
-            this.$axios.patch('/api/post/audit',auditData
+            if (passFlag) {
+                auditData.opt = 1;
+            } else {
+                auditData.opt = 0;
+            }
+            
+            this.$axios.patch('/api/post/audit',auditData,{
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
+                }
+            }
             ).then((response) => {
-
+                this.changeToTiezi()
             }).catch(
 
             ).then(
-
+                
             );
 
         },
