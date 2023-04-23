@@ -88,7 +88,7 @@ export default ({
     },
     computed: {
         checkedPosts() {
-            return this.postDatas.filter(post => post.status == 1)
+            return this.postDatas.filter(post => post.status == 2)
         },
         unCheckedPosts() {
             return this.postDatas.filter(post => post.status == 0)
@@ -110,12 +110,17 @@ export default ({
             this.$axios.delete("/api/post",{
                 data:{
                     post_id:post.post_id,
-                    user_id:localStorage.ManagerUserData.user_id//?
+                    user_id:Number(localStorage.user_id)//?
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
                 }
             }).then((response) => {
 
             }).catch((response) => {
                 
+            }).then(() => {
+                this.getPosts();
             });
         },
         changeToYonghu() {

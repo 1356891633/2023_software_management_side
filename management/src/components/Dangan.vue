@@ -33,7 +33,7 @@
                                     <el-input v-model="createForm.content" type="textarea" :rows="10" autosize></el-input>
                                 </el-form-item>
                                 <!-- <el-form-item label="图片">
-                                    <div style="display: inline-block;" v-for="img in postData.postImages">
+                                    <div style="display: inline-block;" v-for="img in postData.pics">
                                         <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                                     </div>
                                 </el-form-item> -->
@@ -89,7 +89,7 @@
                                             autosize></el-input>
                                     </el-form-item>
                                     <!-- <el-form-item label="图片">
-                                    <div style="display: inline-block;" v-for="img in postData.postImages">
+                                    <div style="display: inline-block;" v-for="img in postData.pics">
                                         <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                                     </div>
                                 </el-form-item> -->
