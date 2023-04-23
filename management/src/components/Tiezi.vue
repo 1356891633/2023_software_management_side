@@ -95,8 +95,10 @@ export default ({
         },
     },
     created() {
+        console.log("created!")
         this.Token = this.$query;
         this.getPosts();
+        // this.$nextTick(getPosts());
     },
     methods: {
         editPost(item) {

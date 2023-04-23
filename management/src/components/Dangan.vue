@@ -18,19 +18,26 @@
                             <el-button type="success" @click="createVisible = true">创建档案</el-button>
                         </el-card>
 
-                        <el-dialog title="创建新档案" :visible.sync="createVisible" width="70%" @close="resetForm('createForm')">
+                        <el-dialog title="创建新档案" :visible.sync="createVisible" width="70%"
+                            @closed="resetForm('createForm')">
                             <el-form ref="createForm" :model="createForm" label-width="80px">
-                                <el-form-item label="动物姓名" prop="name">
-                                    <el-input v-model="createForm.name"></el-input>
+                                <el-form-item label="动物姓名" prop="animal_name">
+                                    <el-input v-model="createForm.animal_name"></el-input>
                                 </el-form-item>
-                                <el-form-item label="动物性别" prop="sex">
-                                    <el-radio-group v-model="createForm.sex">
-                                        <el-radio label="雄性" border></el-radio>
-                                        <el-radio label="雌性" border></el-radio>
+                                <el-form-item label="动物性别" prop="animal_sex">
+                                    <el-radio-group v-model="createForm.animal_sex">
+                                        <el-radio label=0 border>雄性</el-radio>
+                                        <el-radio label=1 border>雌性</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item label="动物描述" prop=content>
                                     <el-input v-model="createForm.content" type="textarea" :rows="10" autosize></el-input>
+                                </el-form-item>
+                                <el-form-item label="动物状态" prop="animal_status">
+                                    <el-radio-group v-model="createForm.animal_status">
+                                        <el-radio label=0 border>未流浪</el-radio>
+                                        <el-radio label=1 border>流浪</el-radio>
+                                    </el-radio-group>
                                 </el-form-item>
                                 <!-- <el-form-item label="图片">
                                     <div style="display: inline-block;" v-for="img in postData.pics">
@@ -56,7 +63,7 @@
 
                         <el-card class="box-card" v-for="archive in animalArchives">
                             <div class="clearfix">
-                                <span>{{ archive.name }}</span>
+                                <span>{{ archive.animal_name }}</span>
                                 <el-button style="float: right" type="primary"
                                     @click="openEditArchive(archive)">详情</el-button>
                                 <el-button style="float: right" type="danger" @click="deleteArchive(archive)">删除</el-button>
@@ -65,8 +72,8 @@
 
                         <el-dialog title="动物档案" :visible.sync="editVisible" width="70%">
                             <div>
-                                <p>动物名字:{{ activeArchive.name }}</p>
-                                <p> 性别:{{ activeArchive.sex }}</p>
+                                <p>动物名字:{{ activeArchive.animal_name }}</p>
+                                <p> 性别:{{ animalSex(activeArchive.animal_sex) }}</p>
                                 <p> 动物介绍:{{ activeArchive.content }}</p>
                             </div>
                             <span slot="footer" class="dialog-footer">
@@ -76,10 +83,10 @@
                             <el-dialog title="编辑信息" :visible.sync="innerEditVisible" width="65%" append-to-body=true>
                                 <el-form ref="editForm" :model="activeArchive" label-width="80px">
                                     <el-form-item label="动物姓名" prop="name">
-                                        <el-input v-model="createForm.name"></el-input>
+                                        <el-input v-model="createForm.animal_name"></el-input>
                                     </el-form-item>
                                     <el-form-item label="动物性别" prop="sex">
-                                        <el-radio-group v-model="createForm.sex">
+                                        <el-radio-group v-model="createForm.animal_sex">
                                             <el-radio :label="雄性" border>雄性</el-radio>
                                             <el-radio :label="雌性" border>雌性</el-radio>
                                         </el-radio-group>
@@ -169,16 +176,16 @@ export default ({
             activeArchive: "",
             animalArchives: [
                 {
-                    id: "1",
-                    name: "动物名字1",
-                    sex: "雄性",
+                    animal_id: "1",
+                    animal_name: "动物名字1",
+                    animal_sex: "雄性",
                     status: "0",
                     content: "动物描述1",
                 },
                 {
-                    id: "2",
-                    name: "动物名字2",
-                    sex: "雌性",
+                    animal_id: "2",
+                    animal_name: "动物名字2",
+                    animal_sex: "雌性",
                     status: "1",
                     content: "动物描述2",
                 }
@@ -192,10 +199,10 @@ export default ({
                 }
             ],
             createForm: {
-                sex: "",
+                animal_sex: "",
                 content: "",
-                name: "",
-                status: ""
+                animal_name: "",
+                animal_status: ""
             },
             reqUser: "",
             reqAnimal: "",
@@ -203,10 +210,38 @@ export default ({
     },
     created() {
         this.Token = this.$query;
-        this.getinfo();
+        this.getAnimalArchive();
+        this.getReq();
+    },
+    computed: {
+        animalSex() {
+            return (sexType) => {
+                if (sexType == 0) {
+                    return "雄性"
+                } else {
+                    return "雌性"
+                }
+            }
+        }
     },
     methods: {
-        getReqInfo() {
+        getAnimalArchive() {
+            this.$axios.get('/api/animal/table', {
+                params: {
+                    page: 1,
+                    limit: 100,
+                    sort: "created_at"
+                }
+            }).then((response) => {
+                console.log(response.data.data);
+                this.animalArchives = response.data.data.animals;
+            }).catch(
+
+            ).then(
+
+            );
+        },
+        getReq() {
 
         },
         refuseReq() {
@@ -222,15 +257,46 @@ export default ({
         editArchive(item) {
             this.editVisible = false;
         },
-        deleteArchive() {
-            this.$axios.delete('/api/')
+        deleteArchive(animal_archive) {
+            this.$axios.delete('/api/animal', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.jwt}`,
+                },
+                data: {
+                    animal_id: animal_archive.animal_id
+                },
+            }).then((response) => {
+
+            }).catch(
+
+            ).then(
+                this.getAnimalArchive()
+            )
 
         },
         createArchive() {
+            this.$axios.post('/api/animal', {
+                "animal_sex": Number(this.createForm.animal_sex),
+                "content": this.createForm.content,
+                "animal_name": this.createForm.animal_name,
+                "animal_status": Number(this.createForm.animal_status)
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.jwt}`,
+                }
+            }).then(
+
+            ).catch(
+
+            ).then(
+                this.getAnimalArchive()
+            )
+            
             this.createVisible = false;
+
         },
         resetForm(formRef) {
-            this.$refs[formRef].resetFields();
+            // this.$refs[formRef].resetFields()
         },
         viewRequest() {
             this.viewReqVisible = true;
