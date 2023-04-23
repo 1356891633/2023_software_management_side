@@ -177,7 +177,8 @@
       userLogin() {
         this.$refs["loginUser"].validate((valid) => {
           if (valid) {
-            this.$axios.post("/api/user/login", JSON.stringify(this.loginUser)).then(response => {
+            console.log("111");
+            this.$axios.post("/api/user/login", JSON.stringify({phone_number:this.loginUser.user_id,password:this.loginUser.user_password})).then(response => {
               if (response.code==200) {
                 this.$message({
                   message: "登录成功！",
@@ -193,6 +194,7 @@
               }
             }).catch(response => {
               console.log(response)
+              console.log("222")
             })
           } else {
             console.log('error submit!!');

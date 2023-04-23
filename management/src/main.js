@@ -9,7 +9,7 @@ import axios from 'axios'
 
 Vue.prototype.$axios = axios
 Vue.use(ElementUI)
-
+axios.defaults.baseURL='/api'
 Vue.config.productionTip = false
 
 new Vue({
