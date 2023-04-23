@@ -78,7 +78,9 @@ export default {
           headers: {
             Authorization: `Bearer ${localStorage.jwt}`,
           },
-          user_id:item.user_id,
+          data: {
+            user_id: item.user_id,
+          },
         })
         .then((res) => {
           if (res.successcode) {
@@ -89,12 +91,17 @@ export default {
     },
     ChangeToAdmin(item) {
       console.log("change");
-      this.$axios.patch("/api/user/update/grant", {
-        headers: {
-          Authorization: `Bearer ${localStorage.jwt}`,
+      this.$axios.patch(
+        "api/user/update/grant",
+        {
+          user_id: item.user_id,
         },
-        user_id: item.user_id,
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.jwt}`,
+          },
+        }
+      );
     },
     SearchUser() {},
     getdata() {
