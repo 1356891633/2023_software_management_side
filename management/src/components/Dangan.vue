@@ -150,8 +150,8 @@
 
 
                             <span slot="footer" class="dialog-footer">
-                                <el-button type="danger" @click="refuseReq()">拒绝</el-button>
-                                <el-button type="primary" @click="passReq()">通过</el-button>
+                                <el-button type="danger" @click="processReq(false)">拒绝</el-button>
+                                <el-button type="primary" @click="processReq(true)">通过</el-button>
                             </span>
                         </el-dialog>
                     </el-collapse-item>
@@ -184,6 +184,7 @@ export default ({
             },
             reqUser: "",
             reqAnimal: "",
+            activeReq:""
         }
     },
     created() {
@@ -254,11 +255,23 @@ export default ({
                 this.animalAdoptRequests = response.data.data.adopts;
             })
         },
-        refuseReq() {
+        processReq(passFlag) {
+            //TODO
             this.viewReqVisible = false;
-        },
-        passReq() {
-            this.viewReqVisible = false;
+            let tempReqData = {
+                adopt_id:this.activeReq.adopt_id,
+                opt:""
+            }
+            if (passFlag) {
+                tempReqData.opt = 1;
+            } else {
+                tempReqData.opt = 0;
+            }
+            this.$axios.post('/api/animal/adopt/update',tempReqData,{
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`
+                }
+            })
         },
         openEditArchive(archive) {
             this.activeArchive = archive;
@@ -310,6 +323,8 @@ export default ({
         },
         viewRequest(req) {
             this.viewReqVisible = true;
+
+            this.activeReq = req;
 
             let idx = this.animalArchives.findIndex(archive => Number(archive.animal_id) == Number(req.animal_id))
             let temp_archive = this.animalArchives[idx]
