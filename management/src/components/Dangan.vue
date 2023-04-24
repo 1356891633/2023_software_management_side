@@ -97,43 +97,60 @@
               </div>
             </el-card>
 
-            <el-dialog
-              title="编辑信息"
-              :visible.sync="innerEditVisible"
-              width="65%"
-              append-to-body="true"
-            >
-              <el-form ref="editForm" label-width="80px">
-                <el-form-item label="动物姓名" prop="name">
-                  <el-input v-model="createForm.animal_name"></el-input>
-                </el-form-item>
-                <el-form-item label="动物性别" prop="sex">
-                  <el-radio-group v-model="createForm.animal_sex">
-                    <el-radio :label="0">雄性</el-radio>
-                    <el-radio :label="1">雌性</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item label="动物描述" prop="content">
-                  <el-input
-                    v-model="createForm.content"
-                    type="textarea"
-                    :rows="10"
-                    autosize
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="动物状态" prop="status">
-                  <el-radio-group v-model="createForm.animal_status">
-                    <el-radio :label="0" border>未领养</el-radio>
-                    <el-radio :label="1" border>已领养</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="editArchive(activeArchive)"
-                    >完成编辑</el-button
-                  >
-                  <el-button @click="innerEditVisible = false">取消</el-button>
-                </el-form-item>
-              </el-form>
+            <el-dialog title="动物档案" :visible.sync="editVisible" width="70%">
+              <div>
+                <p>动物名字:{{ activeArchive.animal_name }}</p>
+                <p>性别:{{ animalSex(activeArchive.animal_sex) }}</p>
+                <p>动物介绍:{{ activeArchive.content }}</p>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="editVisible = false">取消</el-button>
+                <el-button type="primary" @click="innerEditVisible = true"
+                  >编辑</el-button
+                >
+              </span>
+              <el-dialog
+                title="编辑信息"
+                :visible.sync="innerEditVisible"
+                width="65%"
+                append-to-body="true"
+              >
+                <el-form ref="editForm" label-width="80px">
+                  <el-form-item label="动物姓名" prop="name">
+                    <el-input v-model="createForm.animal_name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="动物性别" prop="sex">
+                    <el-radio-group v-model="createForm.animal_sex">
+                      <el-radio :label="0">雄性</el-radio>
+                      <el-radio :label="1">雌性</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item label="动物描述" prop="content">
+                    <el-input
+                      v-model="createForm.content"
+                      type="textarea"
+                      :rows="10"
+                      autosize
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="动物状态" prop="status">
+                    <el-radio-group v-model="createForm.animal_status">
+                      <el-radio :label="0" border>未领养</el-radio>
+                      <el-radio :label="1" border>已领养</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button
+                      type="primary"
+                      @click="editArchive(activeArchive)"
+                      >完成编辑</el-button
+                    >
+                    <el-button @click="innerEditVisible = false"
+                      >取消</el-button
+                    >
+                  </el-form-item>
+                </el-form>
+              </el-dialog>
             </el-dialog>
           </el-collapse-item>
           <el-collapse-item title="流浪动物领养申请" name="2">
@@ -367,9 +384,11 @@ export default {
             },
           }
         )
-        .then()
-        .catch()
-        .then(this.getAnimalArchive());
+        .then((response) => {
+          this.getAnimalArchive();
+          console.log(response.data);
+        })
+        .catch();
 
       this.createVisible = false;
     },
