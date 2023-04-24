@@ -290,16 +290,17 @@ export default {
         });
     },
     processReq(passFlag) {
-      //TODO
+      // TODO
       this.viewReqVisible = false;
       let tempReqData = {
         adopt_id: this.activeReq.adopt_id,
+        user_id: this.reqUser.user_id,
         opt: "",
       };
       if (passFlag) {
         tempReqData.opt = 1;
       } else {
-        tempReqData.opt = 0;
+        tempReqData.opt = 2;
       }
       this.$axios.post("/api/animal/adopt/update", tempReqData, {
         headers: {
