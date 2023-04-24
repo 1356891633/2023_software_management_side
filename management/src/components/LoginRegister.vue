@@ -20,11 +20,11 @@
               status-icon
               :rules="loginRules"
             >
-              <el-form-item label="学号" prop="user_id">
+              <el-form-item label="手机号" prop="user_id">
                 <el-input
                   class="input-info"
                   v-model="loginUser.user_id"
-                  placeholder="请输入学号"
+                  placeholder="请输入手机号"
                   prefix-icon="el-icon-user"
                 ></el-input>
               </el-form-item>
@@ -177,7 +177,7 @@ export default {
         user_id: [
           {
             required: true,
-            message: "用户名不能为空",
+            message: "手机号不能为空",
             trigger: "blur",
           },
         ],

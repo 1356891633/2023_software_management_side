@@ -51,8 +51,8 @@
                 </el-form-item>
                 <el-form-item label="动物状态" prop="animal_status">
                   <el-radio-group v-model="createForm.animal_status">
-                    <el-radio label="0" border>未流浪</el-radio>
-                    <el-radio label="1" border>流浪</el-radio>
+                    <el-radio label="0" border>未领养</el-radio>
+                    <el-radio label="1" border>已领养</el-radio>
                   </el-radio-group>
                 </el-form-item>
                 <!-- <el-form-item label="图片">
