@@ -16,10 +16,13 @@
         <el-container>
             <el-aside width="200px" class="el-aside">
                 <el-menu :default-active="menuActivateIndex" mode="vertical" router>
-                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i class="el-icon-user"></i>用户管理</span></el-menu-item>
+                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i
+                                class="el-icon-user"></i>用户管理</span></el-menu-item>
                     <el-menu-item index="2" route="/Tiezi"><i class="el-icon-edit"></i>帖子管理</el-menu-item>
-                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i class="el-icon-menu"></i>档案管理</span></el-menu-item>
-                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i class="el-icon-help"></i>求助管理</span></el-menu-item>
+                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i
+                                class="el-icon-menu"></i>档案管理</span></el-menu-item>
+                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i
+                                class="el-icon-help"></i>求助管理</span></el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
@@ -89,17 +92,17 @@ export default ({
     methods: {
         auditPost(passFlag) {
             let auditData = {
-                user_id:Number(localStorage.user_id),
-                post_id:this.postData.post_id,
-                opt:""
+                user_id: Number(localStorage.user_id),
+                post_id: this.postData.post_id,
+                opt: ""
             }
             if (passFlag) {
                 auditData.opt = 1;
             } else {
                 auditData.opt = 0;
             }
-            
-            this.$axios.patch('/api/post/audit',auditData,{
+
+            this.$axios.patch('/api/post/audit', auditData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.jwt}`
                 }
@@ -109,7 +112,7 @@ export default ({
             }).catch(
 
             ).then(
-                
+
             );
 
         },
@@ -133,6 +136,15 @@ export default ({
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
         getinfo() {
+            this.$axios
+                .get("/api/user/info", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.jwt}`,
+                    },
+                })
+                .then((response) => {
+                    this.ManagerUserData = response.data.data.user;
+                });
         },
     },
     watch: {

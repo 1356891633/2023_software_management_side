@@ -482,7 +482,17 @@ export default {
     changeToQiuzhu() {
       this.$router.push({ path: "/Qiuzhu", query: this.Token });
     },
-    getinfo() {},
+    getinfo() {
+      this.$axios
+        .get("/api/user/info", {
+          headers: {
+            Authorization: `Bearer ${localStorage.jwt}`,
+          },
+        })
+        .then((response) => {
+          this.ManagerUserData = response.data.data.user;
+        });
+    },
   },
 };
 </script>

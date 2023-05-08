@@ -16,10 +16,13 @@
         <el-container>
             <el-aside width="200px" class="el-aside">
                 <el-menu :default-active="menuActivateIndex" mode="vertical" router>
-                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i class="el-icon-user"></i>用户管理</span></el-menu-item>
+                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i
+                                class="el-icon-user"></i>用户管理</span></el-menu-item>
                     <el-menu-item index="2" route="/Tiezi"><i class="el-icon-edit"></i>帖子管理</el-menu-item>
-                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i class="el-icon-menu"></i>档案管理</span></el-menu-item>
-                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i class="el-icon-help"></i>求助管理</span></el-menu-item>
+                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i
+                                class="el-icon-menu"></i>档案管理</span></el-menu-item>
+                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i
+                                class="el-icon-help"></i>求助管理</span></el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
@@ -35,12 +38,12 @@
                             <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                         </div>
                     </el-form-item>
-                    
+
                     <el-form-item label="图片上传">
                         <el-upload class="img-upload" drag multiple action="upload addr">
                             <!-- TODO 上传地址 -->
 
-                                <i class=" el-icon-upload"></i>
+                            <i class=" el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                         </el-upload>
@@ -80,10 +83,10 @@ export default ({
             let updateData = {
                 user_id: Number(localStorage.user_id),
                 post_id: this.postData.post_id,
-                title:this.postData.title,
-                content:this.postData.content
+                title: this.postData.title,
+                content: this.postData.content
             }
-            this.$axios.post('/api/post/update',updateData,{
+            this.$axios.post('/api/post/update', updateData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.jwt}`
                 }
@@ -101,8 +104,8 @@ export default ({
         deletePost() {
 
         },
-        changeToTiezi(){
-            this.$router.push({path:'/Tiezi',query:this.Token})
+        changeToTiezi() {
+            this.$router.push({ path: '/Tiezi', query: this.Token })
         },
         changeToYonghu() {
             this.$router.push({ path: '/MainGround', query: this.Token })
@@ -114,6 +117,15 @@ export default ({
             this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
         getinfo() {
+            this.$axios
+                .get("/api/user/info", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.jwt}`,
+                    },
+                })
+                .then((response) => {
+                    this.ManagerUserData = response.data.data.user;
+                });
         },
     },
     watch: {
