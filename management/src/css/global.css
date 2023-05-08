@@ -1,3 +1,37 @@
 body{
     margin: 0px auto;
 }
+.el-header {
+    height: 300px;
+    width: 100%;
+    background-color:rgb(235, 226, 212);
+  }
+  .el-aside {
+    /* background-color: aqua; */
+  }
+  .el-main {
+    float: left;
+    /* background-color:rgb(245, 245, 220); */
+  }
+  .button {
+    float: left;
+    /* size:small; */
+    /* margin-left: 20px; */
+  
+  }
+
+  .el-header span{
+    float:right;margin-right:30px;margin-top: 20px; font-size:medium;
+  }
+  .el-card :hover{
+  
+  }
+  .titleimg {
+    display: flex;
+  }
+  .titleimg > img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }

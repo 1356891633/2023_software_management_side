@@ -1,19 +1,31 @@
 <template>
   <el-container>
-    <el-header> </el-header>
+    <el-header> 
+        <div>
+      <span  class="el-icon-lock" @click="logout()">
+        退出登录
+      </span>
+      <el-divider direction="vertical"></el-divider>
+      <span class="el-icon-hello">
+        账户: {{ ManagerUserData.user_name }} , 您好
+      </span>
+      <img src="/src/assets/school.png" alt="" />
+      <el-divider direction="vertical"></el-divider>
+    </div>
+    </el-header>
     <el-container>
       <el-aside width="200px">
         <el-menu :default-active="menuActivateIndex" mode="vertical" router>
           <el-menu-item index="1" route="/MainGround"
-            ><span @click="changeToYonghu">用户管理</span></el-menu-item
+            ><span @click="changeToYonghu"><i class="el-icon-user"></i>用户管理</span></el-menu-item
           >
           <el-menu-item index="2" route="/Tiezi"
-            ><span @click="changeToTiezi">帖子管理</span></el-menu-item
+            ><span @click="changeToTiezi"><i class="el-icon-edit"></i>帖子管理</span></el-menu-item
           >
           <el-menu-item index="3" route="/Dangan"
-            ><span @click="changeToDangan">档案管理</span></el-menu-item
+            ><span @click="changeToDangan"><i class="el-icon-menu"></i>档案管理</span></el-menu-item
           >
-          <el-menu-item index="4" route="/Qiuzhu">求助管理</el-menu-item>
+          <el-menu-item index="4" route="/Qiuzhu"><i class="el-icon-help"></i>求助管理</el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -98,23 +110,23 @@ export default {
       activeNames: ["1"],
       dialogVisible: false,
       helpPosts: [
-                // {
-                //     post_id:1,
-                //     title: "求助标题1",
-                //     content: "求助内容1",
-                //     pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
-                //     postTime: "",
-                //     status: "0"
+                {
+                    post_id:1,
+                    title: "求助标题1",
+                    content: "求助内容1",
+                    pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+                    postTime: "",
+                    status: "0"
 
-                // },
-                // {
-                //     post_id:2,
-                //     title: "求助标题2",
-                //     content: "求助内容2",
-                //     pics: [],
-                //     postTime: "",
-                //     status: "0"
-                // }
+                },
+                {
+                    post_id:2,
+                    title: "求助标题2",
+                    content: "求助内容2",
+                    pics: [],
+                    postTime: "",
+                    status: "0"
+                }
       ],
       activeHelpPost: "",
       helpForm: {

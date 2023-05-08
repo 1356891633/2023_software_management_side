@@ -1,14 +1,25 @@
 <template>
     <el-container>
         <el-header class="el-header">
+            <div>
+                <span class="el-icon-lock" @click="logout()">
+                    退出登录
+                </span>
+                <el-divider direction="vertical"></el-divider>
+                <span class="el-icon-hello">
+                    账户: {{ ManagerUserData.user_name }} , 您好
+                </span>
+                <img src="/src/assets/school.png" alt="" />
+                <el-divider direction="vertical"></el-divider>
+            </div>
         </el-header>
         <el-container>
             <el-aside width="200px" class="el-aside">
                 <el-menu :default-active="menuActivateIndex" mode="vertical" router>
-                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu">用户管理</span></el-menu-item>
-                    <el-menu-item index="2" route="/Tiezi">帖子管理</el-menu-item>
-                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan">档案管理</span></el-menu-item>
-                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu">求助管理</span></el-menu-item>
+                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i class="el-icon-user"></i>用户管理</span></el-menu-item>
+                    <el-menu-item index="2" route="/Tiezi"><i class="el-icon-edit"></i>帖子管理</el-menu-item>
+                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i class="el-icon-menu"></i>档案管理</span></el-menu-item>
+                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i class="el-icon-help"></i>求助管理</span></el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
@@ -24,11 +35,12 @@
                                 {{ post.content }}
                             </div>
 
-                            <div v-if="post.pics!=None && post.pics.length!=0 && (post.pics.length!=1 ||post.pics[0].length!=0)">
-                            <div class="block" style="display: inline-block;" v-for="img in post.pics">
-                                <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                            <div
+                                v-if="post.pics != None && post.pics.length != 0 && (post.pics.length != 1 || post.pics[0].length != 0)">
+                                <div class="block" style="display: inline-block;" v-for="img in post.pics">
+                                    <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                                </div>
                             </div>
-                        </div>
                         </el-card>
                     </el-collapse-item>
                     <el-collapse-item title="已审核帖子" name="2">
@@ -41,13 +53,14 @@
                             <div>
                                 {{ post.content }}
                             </div>
-                            <div v-if="post.pics!=None && post.pics.length!=0 && (post.pics.length!=1 ||post.pics[0].length!=0)">
+                            <div
+                                v-if="post.pics != None && post.pics.length != 0 && (post.pics.length != 1 || post.pics[0].length != 0)">
                                 <div class="block" style="display: inline-block; margin: 10 10 10 10;"
-                                v-for="img in post.pics">
-                                <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                                    v-for="img in post.pics">
+                                    <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                                </div>
                             </div>
-                            </div>
-                            
+
                         </el-card>
                     </el-collapse-item>
                 </el-collapse>
@@ -69,23 +82,23 @@ export default ({
 
             //TODO: to be modified
             postDatas: [
-                // {
-                //     post_id:1,
-                //     title: "帖子标题1",
-                //     content: "帖子内容1",
-                //     pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
-                //     postTime: "",
-                //     status: "2"
+                {
+                    post_id: 1,
+                    title: "帖子标题1",
+                    content: "帖子内容1",
+                    pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+                    postTime: "",
+                    status: "0"
 
-                // },
-                // {
-                //     post_id:2,
-                //     title: "帖子标题2",
-                //     content: "帖子内容2",
-                //     pics: [],
-                //     postTime: "",
-                //     status: "2"
-                // }
+                },
+                {
+                    post_id: 2,
+                    title: "帖子标题2",
+                    content: "帖子内容2",
+                    pics: [],
+                    postTime: "",
+                    status: "2"
+                }
             ],
             activeNames: ["1", "2"]
         }
@@ -114,10 +127,10 @@ export default ({
             this.$router.push({ path: '/PostCheck', query: { Item: item, ManagerToken: this.Token } });
         },
         deletePost(post) {
-            this.$axios.delete("/api/post",{
-                data:{
-                    post_id:post.post_id,
-                    user_id:Number(localStorage.user_id)//?
+            this.$axios.delete("/api/post", {
+                data: {
+                    post_id: post.post_id,
+                    user_id: Number(localStorage.user_id)//?
                 },
                 headers: {
                     'Authorization': `Bearer ${localStorage.jwt}`
@@ -125,7 +138,7 @@ export default ({
             }).then((response) => {
 
             }).catch((response) => {
-                
+
             }).then(() => {
                 this.getPosts();
             });

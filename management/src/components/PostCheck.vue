@@ -1,14 +1,25 @@
 <template>
     <el-container>
         <el-header class="el-header">
+            <div>
+                <span class="el-icon-lock" @click="logout()">
+                    退出登录
+                </span>
+                <el-divider direction="vertical"></el-divider>
+                <span class="el-icon-hello">
+                    账户: {{ ManagerUserData.user_name }} , 您好
+                </span>
+                <img src="/src/assets/school.png" alt="" />
+                <el-divider direction="vertical"></el-divider>
+            </div>
         </el-header>
         <el-container>
             <el-aside width="200px" class="el-aside">
                 <el-menu :default-active="menuActivateIndex" mode="vertical" router>
-                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu">用户管理</span></el-menu-item>
-                    <el-menu-item index="2" route="/Tiezi">帖子管理</el-menu-item>
-                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan">档案管理</span></el-menu-item>
-                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu">求助管理</span></el-menu-item>
+                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i class="el-icon-user"></i>用户管理</span></el-menu-item>
+                    <el-menu-item index="2" route="/Tiezi"><i class="el-icon-edit"></i>帖子管理</el-menu-item>
+                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i class="el-icon-menu"></i>档案管理</span></el-menu-item>
+                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i class="el-icon-help"></i>求助管理</span></el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
