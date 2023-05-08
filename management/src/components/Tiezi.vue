@@ -24,9 +24,11 @@
                                 {{ post.content }}
                             </div>
 
+                            <div v-if="post.pics!=None && post.pics.length!=0 && (post.pics.length!=1 ||post.pics[0].length!=0)">
                             <div class="block" style="display: inline-block;" v-for="img in post.pics">
                                 <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                             </div>
+                        </div>
                         </el-card>
                     </el-collapse-item>
                     <el-collapse-item title="已审核帖子" name="2">
@@ -39,11 +41,13 @@
                             <div>
                                 {{ post.content }}
                             </div>
-
-                            <div class="block" style="display: inline-block; margin: 10 10 10 10;"
+                            <div v-if="post.pics!=None && post.pics.length!=0 && (post.pics.length!=1 ||post.pics[0].length!=0)">
+                                <div class="block" style="display: inline-block; margin: 10 10 10 10;"
                                 v-for="img in post.pics">
                                 <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                             </div>
+                            </div>
+                            
                         </el-card>
                     </el-collapse-item>
                 </el-collapse>

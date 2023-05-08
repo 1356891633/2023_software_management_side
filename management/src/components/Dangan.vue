@@ -51,8 +51,8 @@
                 </el-form-item>
                 <el-form-item label="动物状态" prop="animal_status">
                   <el-radio-group v-model="createForm.animal_status">
-                    <el-radio label="0" border>未流浪</el-radio>
-                    <el-radio label="1" border>流浪</el-radio>
+                    <el-radio label="0" border>未领养</el-radio>
+                    <el-radio label="1" border>已领养</el-radio>
                   </el-radio-group>
                 </el-form-item>
                 <!-- <el-form-item label="图片">
@@ -157,8 +157,10 @@
             <el-card class="box-card" v-for="req in animalAdoptRequests">
               <div class="clearfix">
                 <span
-                  >{{ req.user_id }}有关申请领养
+                  >有关申请领养
                   {{ getAnimalName(req.animal_id) }}
+                  
+                  状态 ：{{ curReqStatus(req.status) }}
                 </span>
                 <el-button
                   style="float: right"
@@ -250,6 +252,17 @@ export default {
         }
       };
     },
+    curReqStatus() {
+        return (status) => {
+            if(status === 2) {
+                return "拒绝"
+            } else if(status === 1) {
+                return "通过"
+            } else {
+                return "未处理"
+            }
+        }
+    }
     // curAnimalName() {
     //     return (animal_id) => {
     //         console.log(this.animalArchives.filter(archive => archive.animal_id === animal_id).at(0))
@@ -307,22 +320,26 @@ export default {
         });
     },
     processReq(passFlag) {
-      //TODO
+      // TODO
       this.viewReqVisible = false;
       let tempReqData = {
         adopt_id: this.activeReq.adopt_id,
-        opt: "",
+        user_id: this.reqUser.user_id,
+        status: "",
       };
       if (passFlag) {
-        tempReqData.opt = 1;
+        tempReqData.status = 1;
       } else {
-        tempReqData.opt = 0;
+        tempReqData.status = 2;
       }
       this.$axios.post("/api/animal/adopt/update", tempReqData, {
         headers: {
           Authorization: `Bearer ${localStorage.jwt}`,
         },
+      }).then(() => {
+        this.getReq();
       });
+      
     },
     openEditArchive(archive) {
       this.activeArchive = archive;
