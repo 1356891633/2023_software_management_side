@@ -110,23 +110,23 @@ export default {
       activeNames: ["1"],
       dialogVisible: false,
       helpPosts: [
-                {
-                    post_id:1,
-                    title: "求助标题1",
-                    content: "求助内容1",
-                    pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
-                    postTime: "",
-                    status: "0"
+        // {
+        //     post_id:1,
+        //     title: "求助标题1",
+        //     content: "求助内容1",
+        //     pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+        //     postTime: "",
+        //     status: "0"
 
-                },
-                {
-                    post_id:2,
-                    title: "求助标题2",
-                    content: "求助内容2",
-                    pics: [],
-                    postTime: "",
-                    status: "0"
-                }
+        // },
+        // {
+        //     post_id:2,
+        //     title: "求助标题2",
+        //     content: "求助内容2",
+        //     pics: [],
+        //     postTime: "",
+        //     status: "0"
+        // }
       ],
       activeHelpPost: "",
       helpForm: {
