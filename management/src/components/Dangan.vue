@@ -2,7 +2,7 @@
   <el-container>
     <el-header> </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="200px" class="el-aside">
         <el-menu :default-active="menuActivateIndex" mode="vertical" router>
           <el-menu-item index="1" route="/MainGround"
             ><span @click="changeToYonghu">用户管理</span></el-menu-item
