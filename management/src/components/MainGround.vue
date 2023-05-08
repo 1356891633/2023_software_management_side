@@ -1,18 +1,30 @@
 <template>
   <el-container>
-    <el-header class="el-header"> </el-header>
+    <el-header class="el-header"> 
+      <div>
+      <span  class="el-icon-lock" @click="logout()">
+        退出登录
+      </span>
+      <el-divider direction="vertical"></el-divider>
+      <span class="el-icon-hello">
+        账户: {{ ManagerUserData.user_name }} , 您好
+      </span>
+      <img src="/src/assets/school.png" alt="" />
+      <el-divider direction="vertical"></el-divider>
+    </div>
+    </el-header>
     <el-container direction="horizontal">
       <el-aside width="200px" class="el-aside">
         <el-menu :default-active="menuActivateIndex" mode="vertical" router>
-          <el-menu-item index="1" route="/MainGround">用户管理</el-menu-item>
+          <el-menu-item index="1" route="/MainGround" ><i class="el-icon-user"></i>用户管理</el-menu-item>
           <el-menu-item index="2" route="/Tiezi"
-            ><span @click="changeToTiezi">帖子管理</span></el-menu-item
+            ><span @click="changeToTiezi"><i class="el-icon-edit"></i>帖子管理</span></el-menu-item
           >
           <el-menu-item index="3" route="/Dangan"
-            ><span @click="changeToDangan">档案管理</span></el-menu-item
+            ><span @click="changeToDangan"><i class="el-icon-menu"></i>档案管理</span></el-menu-item
           >
           <el-menu-item index="4" route="/Qiuzhu"
-            ><span @click="changeToQiuzhu">求助管理</span></el-menu-item
+            ><span @click="changeToQiuzhu"><i class="el-icon-help"></i>求助管理</span></el-menu-item
           >
         </el-menu>
       </el-aside>
@@ -23,11 +35,16 @@
           <div v-for="(item, index) in UserData" :key="index" class="mian1">
             <el-card class="el-card">
               <div>
-                <span style="float: left">{{ item.user_name }}</span>
+                <p style="float: left; margin-left: 10px;">用户名：{{ item.user_name }}</p>
+                <p style="float: left; margin-left: 10px;">电话号码：{{ item.phone_number }}</p>
+                <p style="float: left; margin-left: 10px;">注册时间：{{ item.datetime }}</p>
+
                 <el-button
                   @click="ChangeToAdmin(item)"
                   class="button"
                   type="success"
+                  size="small"
+                  icon="el-icon-edit"
                   >设为管理员</el-button
                 >
                 <!-- <el-button @click="EditUser(item)" class="button" type="primary"
@@ -37,6 +54,8 @@
                   @click="DeleteUser(item)"
                   class="button"
                   type="danger"
+                  size="small"
+                  icon="el-icon-delete"
                   >删除</el-button
                 >
               </div>
@@ -53,16 +72,67 @@ export default {
   data() {
     return {
       Token: "",
-      ManagerUserData: { name: "123" },
+      ManagerUserData: { user_name: "123" },
       menuActivateIndex: "1",
       //TODO
-      UserData: [],
+      UserData: [
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+        {
+          user_name:12132343,
+          phone_number:1233434,
+          datetime:123234234
+        },
+      ],
       input: "",
     };
   },
   created() {
     // this.Token = this.$query.Token;
-    // this.getinfo();
+    this.getinfo();
     this.getdata();
   },
   methods: {
@@ -148,9 +218,9 @@ export default {
 
 <style scoped>
 .el-header {
-  height: 100px;
+  height: 300px;
   width: 100%;
-  /* background-color: black; */
+  background-color:rgb(235, 226, 212);
 }
 .el-aside {
   /* background-color: aqua; */
@@ -160,10 +230,32 @@ export default {
   /* background-color:rgb(245, 245, 220); */
 }
 .button {
-  float: right;
-  margin-bottom: 15px;
+  float: left;
+  /* size:small; */
+  /* margin-left: 20px; */
+
 }
 .el-card {
+  float: left;
+  margin-left: 20px;
+  height:300px ;
+  width:240px;
   background-color: rgb(251, 242, 230);
+  margin-top:5px;
+}
+.el-header span{
+  float:right;margin-right:30px;margin-top: 20px; font-size:medium;
+}
+.el-card :hover{
+
+}
+.titleimg {
+  display: flex;
+}
+.titleimg > img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 20px;
 }
 </style>
