@@ -229,7 +229,9 @@ export default {
   name: "Dangan",
   data() {
     return {
-      ManagerUserData: { user_name: "123" },
+      ManagerUserData: { 
+        // user_name: "123" 
+      },
       menuActivateIndex: "3",
       activeNames: ["1", "2"],
       createVisible: false,
@@ -265,6 +267,7 @@ export default {
     };
   },
   created() {
+    this.getinfo();
     this.getAnimalArchive();
     this.getReq();
   },

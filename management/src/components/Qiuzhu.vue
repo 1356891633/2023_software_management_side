@@ -105,7 +105,9 @@ export default {
   name: "Qiuzhu",
   data() {
     return {
-      ManagerUserData: { user_name: "123" },
+      ManagerUserData: { 
+        // user_name: "123" 
+    },
       menuActivateIndex: "4",
       activeNames: ["1"],
       dialogVisible: false,
@@ -137,6 +139,7 @@ export default {
   },
   created() {
     this.Token = this.$query;
+    this.getinfo();
     this.getHelpPosts();
   },
   computed:{
@@ -219,6 +222,17 @@ export default {
           this.helpPosts = response.data.data.posts;
         })
         .catch((response) => {});
+    },
+    getinfo() {
+      this.$axios
+        .get("/api/user/info", {
+          headers: {
+            Authorization: `Bearer ${localStorage.jwt}`,
+          },
+        })
+        .then((response) => {
+          this.ManagerUserData = response.data.data.user;
+        });
     },
   },
 };

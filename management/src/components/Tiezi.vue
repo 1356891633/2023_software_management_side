@@ -77,7 +77,9 @@ export default ({
     data() {
         return {
             Token: "",
-            ManagerUserData: { user_name: "123" },
+            ManagerUserData: { 
+                // user_name: "123" 
+            },
             menuActivateIndex: "2",
 
             //TODO: to be modified
@@ -114,6 +116,7 @@ export default ({
     created() {
         // this.Token = this.$query;
         console.log('create')
+        this.getinfo();
         this.getPosts();
         this.getPosts();
         // this.$nextTick(getPosts());
@@ -167,6 +170,17 @@ export default ({
                 this.postDatas = response.data.data.posts;
             }).catch((response) => {
 
+            });
+        },
+        getinfo() {
+        this.$axios
+            .get("/api/user/info", {
+            headers: {
+                Authorization: `Bearer ${localStorage.jwt}`,
+            },
+            })
+            .then((response) => {
+            this.ManagerUserData = response.data.data.user;
             });
         },
     }
