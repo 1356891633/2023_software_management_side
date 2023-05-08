@@ -77,7 +77,7 @@ export default ({
     data() {
         return {
             Token: "",
-            ManagerUserData: { name: "123" },
+            ManagerUserData: { user_name: "123" },
             menuActivateIndex: "2",
 
             //TODO: to be modified

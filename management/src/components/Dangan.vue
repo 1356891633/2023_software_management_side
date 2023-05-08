@@ -229,7 +229,7 @@ export default {
   name: "Dangan",
   data() {
     return {
-      ManagerUserData: {},
+      ManagerUserData: { user_name: "123" },
       menuActivateIndex: "3",
       activeNames: ["1", "2"],
       createVisible: false,

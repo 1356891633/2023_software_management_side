@@ -105,7 +105,7 @@ export default {
   name: "Qiuzhu",
   data() {
     return {
-      ManagerUserData: {},
+      ManagerUserData: { user_name: "123" },
       menuActivateIndex: "4",
       activeNames: ["1"],
       dialogVisible: false,
