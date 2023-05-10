@@ -67,6 +67,9 @@
                     <el-radio label="1" border>已领养</el-radio>
                   </el-radio-group>
                 </el-form-item>
+                <el-form-item label="动物种类" prop="animal_type">
+                  <el-input v-model="createForm.animal_type"></el-input>
+                </el-form-item>
                 <!-- <el-form-item label="图片">
                                     <div style="display: inline-block;" v-for="img in postData.pics">
                                         <el-image style="width: 100px; height: 100px" :src="img"></el-image>
@@ -114,6 +117,7 @@
                 <p>动物名字:{{ activeArchive.animal_name }}</p>
                 <p>性别:{{ animalSex(activeArchive.animal_sex) }}</p>
                 <p>动物介绍:{{ activeArchive.content }}</p>
+                <p>动物种类：{{ activeArchive.animal_type}}</p>
               </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取消</el-button>
@@ -150,6 +154,9 @@
                       <el-radio :label="0" border>未领养</el-radio>
                       <el-radio :label="1" border>已领养</el-radio>
                     </el-radio-group>
+                  </el-form-item>
+                  <el-form-item label="动物种类" prop="animal_type">
+                    <el-input v-model="createForm.animal_type"></el-input>
                   </el-form-item>
                   <el-form-item>
                     <el-button
@@ -205,6 +212,7 @@
                     <p>动物名字:{{ reqAnimal.animal_name }}</p>
                     <p>性别:{{ reqAnimal.animal_sex }}</p>
                     <p>动物介绍:{{ reqAnimal.animal_content }}</p>
+                    <p>动物种类：{{ reqAnimal.animal_type }} </p>
                   </div>
                 </el-col>
               </el-row>
@@ -260,6 +268,7 @@ export default {
         content: "",
         animal_name: "",
         animal_status: "",
+        animal_type:""
       },
       reqUser: "",
       reqAnimal: "",
@@ -384,6 +393,7 @@ export default {
             content: this.createForm.content,
             animal_name: this.createForm.animal_name,
             animal_status: this.createForm.animal_status,
+            animal_type:this.createForm.animal_type
           },
           {
             headers: {
@@ -422,6 +432,7 @@ export default {
             content: this.createForm.content,
             animal_name: this.createForm.animal_name,
             animal_status: Number(this.createForm.animal_status),
+            animal_type: this.createForm.animal_type
           },
           {
             headers: {
