@@ -40,9 +40,17 @@
                     </el-form-item>
 
                     <el-form-item label="图片上传">
-                        <el-upload class="img-upload" drag multiple action="upload addr">
-                            <!-- TODO 上传地址 -->
-
+                        <el-upload 
+                            class="img-upload" 
+                            drag 
+                            multiple 
+                            action
+                            :file-list="picUrls"
+                            :http-request="uploadPic"
+                            :on-remove="handleRemove"
+                            :before-upload="beforeUpload"
+                            
+                            >
                             <i class=" el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -64,6 +72,8 @@ export default ({
     name: "Tiezi",
     data() {
         return {
+            fileSize:500,//图片大小限制500k
+            fileType:["png","jpg"],//允许的图片格式
             isEdit: this.$route.query.item,
             Token: "",
             ManagerUserData: { 
@@ -74,6 +84,7 @@ export default ({
             //TODO: to be modified
             postData: {
             },
+            picUrls:[]
         }
     },
     created() {
@@ -86,7 +97,8 @@ export default ({
                 user_id: Number(localStorage.user_id),
                 post_id: this.postData.post_id,
                 title: this.postData.title,
-                content: this.postData.content
+                content: this.postData.content,
+                pics:this.picUrls //TODO:
             }
             this.$axios.post('/api/post/update', updateData, {
                 headers: {
@@ -129,6 +141,50 @@ export default ({
                     this.ManagerUserData = response.data.data.user;
                 });
         },
+        beforeUpload(file) {
+            // if(file.type == "" || file.type == null || file.type == undefined) {
+            //     return false;
+            // }
+            const FileExt = file.name.replace(/.+\./,"").toLowerCase();
+
+            const isLt500K = (file.size /1024) < 500
+
+            if (!isLt500K) {
+                this.$message({
+                    message:'上传文件大小不能超过500k!',
+                    type:'error'
+                });
+                return false;
+            }
+
+            console.log(FileExt)
+            if(!this.fileType.includes(FileExt)) {
+                this.$message({
+                    message:'上传文件格式不正确!',
+                    type:'error'
+                });
+                return false;
+            }
+            return true;
+        },
+        uploadPic(item) {
+            let formDatas = new FormData();
+            formDatas.append('pic',item.file);
+            this.$axios.post("/api/pic/upload", formDatas, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`,
+                    "Content-Type": "multipart/form-data" 
+                }
+            }).then(response => {
+                // console.log(response)
+                let curUrl = response.data.path;
+                this.picUrls.append(curUrl)
+                this.postData.pics.push(curUrl)
+            })
+        },
+        handleRemove() {
+            console.log(this.picUrls)
+        }
     },
     watch: {
         $route: {

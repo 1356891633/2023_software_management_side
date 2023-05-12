@@ -76,15 +76,22 @@
                                     </div>
                                 </el-form-item> -->
 
-                <!-- <el-form-item label="图片上传">
-                                    <el-upload class="img-upload" drag multiple action="upload addr">
-                                        TODO 上传地址
-
-                                        <i class=" el-icon-upload"></i>
-                                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                                        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                                    </el-upload>
-                                </el-form-item> -->
+                <el-form-item label="图片上传" prop="pics">
+                        <el-upload 
+                            class="img-upload" 
+                            drag 
+                            multiple 
+                            action
+                            :file-list="createForm.pics"
+                            :http-request="uploadPic"
+                            :on-remove="handleRemove"
+                            :before-upload="beforeUpload"
+                            >
+                            <i class=" el-icon-upload"></i>
+                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                        </el-upload>
+                </el-form-item>
                 <el-form-item>
                   <el-button type="success" @click="createArchive()"
                     >创建</el-button
@@ -118,6 +125,9 @@
                 <p>性别:{{ animalSex(activeArchive.animal_sex) }}</p>
                 <p>动物介绍:{{ activeArchive.content }}</p>
                 <p>动物种类：{{ activeArchive.animal_type}}</p>
+                <div v-for="pic in activeArchive.pics">
+                  <el-image :src="pic"></el-image>
+                </div>
               </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取消</el-button>
@@ -158,6 +168,22 @@
                   <el-form-item label="动物种类" prop="animal_type">
                     <el-input v-model="createForm.animal_type"></el-input>
                   </el-form-item>
+                  <el-form-item label="图片上传">
+                        <el-upload 
+                            class="img-upload" 
+                            drag 
+                            multiple 
+                            action
+                            :file-list="createForm.pics"
+                            :http-request="uploadPic"
+                            :on-remove="handleRemove"
+                            :before-upload="beforeUpload"
+                            >
+                            <i class=" el-icon-upload"></i>
+                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                        </el-upload>
+                    </el-form-item>
                   <el-form-item>
                     <el-button
                       type="primary"
@@ -237,6 +263,8 @@ export default {
   name: "Dangan",
   data() {
     return {
+      fileSize:500,//图片大小限制500k
+      fileType:["png","jpg"],//允许的图片格式
       ManagerUserData: { 
         // user_name: "123" 
       },
@@ -268,7 +296,8 @@ export default {
         content: "",
         animal_name: "",
         animal_status: "",
-        animal_type:""
+        animal_type:"",
+        pics:[]
       },
       reqUser: "",
       reqAnimal: "",
@@ -393,7 +422,8 @@ export default {
             content: this.createForm.content,
             animal_name: this.createForm.animal_name,
             animal_status: this.createForm.animal_status,
-            animal_type:this.createForm.animal_type
+            animal_type:this.createForm.animal_type,
+            pics:this.createForm.pics
           },
           {
             headers: {
@@ -432,7 +462,8 @@ export default {
             content: this.createForm.content,
             animal_name: this.createForm.animal_name,
             animal_status: Number(this.createForm.animal_status),
-            animal_type: this.createForm.animal_type
+            animal_type: this.createForm.animal_type,
+            pics:this.createForm.pics
           },
           {
             headers: {
@@ -449,7 +480,7 @@ export default {
       this.createVisible = false;
     },
     resetForm(formRef) {
-      // this.$refs[formRef].resetFields()
+      this.$refs[formRef].resetFields()
     },
     viewRequest(req) {
       this.viewReqVisible = true;
@@ -507,6 +538,49 @@ export default {
           this.ManagerUserData = response.data.data.user;
         });
     },
+    beforeUpload(file) {
+            // if(file.type == "" || file.type == null || file.type == undefined) {
+            //     return false;
+            // }
+            const FileExt = file.name.replace(/.+\./,"").toLowerCase();
+
+            const isLt500K = (file.size /1024) < 500
+
+            if (!isLt500K) {
+                this.$message({
+                    message:'上传文件大小不能超过500k!',
+                    type:'error'
+                });
+                return false;
+            }
+
+            console.log(FileExt)
+            if(!this.fileType.includes(FileExt)) {
+                this.$message({
+                    message:'上传文件格式不正确!',
+                    type:'error'
+                });
+                return false;
+            }
+            return true;
+        },
+        uploadPic(item) {
+            let formDatas = new FormData();
+            formDatas.append('pic',item.file);
+            this.$axios.post("/api/pic/upload", formDatas, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.jwt}`,
+                    "Content-Type": "multipart/form-data" 
+                }
+            }).then(response => {
+                console.log(this.createForm.pics)
+                let curUrl = response.data.path;
+                this.createForm.pics.push(curUrl)
+            })
+        },
+        handleRemove() {
+            console.log(this.picUrls)
+        }
   },
 };
 </script>

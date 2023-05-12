@@ -11,6 +11,10 @@ module.exports = {
                 target: 'https://114.116.211.142:8080',  // 
                 changeOrigin: true,
                 logLevel:'debug',
+            },
+            '/post': {
+                target: 'https://114.116.211.142:80',
+                changeOrigin: true,
             }
         }
     }
