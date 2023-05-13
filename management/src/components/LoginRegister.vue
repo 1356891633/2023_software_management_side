@@ -61,12 +61,28 @@
             <div class="title">找回密码</div>
             <div class="findcontent">
               <p>请输入你的账号邮箱</p>
-              <el-input :v-model="email" placeholder="请输入新邮箱" class="input"></el-input>
-              <el-input
-                :v-model="new_password"
-                placeholder="请输入新密码" class="input"
-              ></el-input>
-              <el-input :v-model="userCode" placeholder="验证码" class="input"></el-input>
+              <el-form>
+                <el-input
+                  v-model="email"
+                  placeholder="请输入新邮箱"
+                  class="input"
+                ></el-input>
+                <el-input
+                  v-model="phonenumber"
+                  placeholder="请输入电话号码"
+                  class="input"
+                ></el-input>
+                <el-input
+                  v-model="new_password"
+                  placeholder="请输入新密码"
+                  class="input"
+                ></el-input>
+                <el-input
+                  v-model="userCode"
+                  placeholder="验证码"
+                  class="input"
+                ></el-input>
+              </el-form>
               <el-button @click="getvCode()">点击获取验证码</el-button>
               <el-button @click="modify()">确认</el-button>
             </div>
@@ -184,6 +200,7 @@ export default {
       new_password: "",
       vCode: "",
       userCode: "",
+      phonenumber:"",
       loginUser: {
         user_id: "",
         user_password: "",
@@ -215,6 +232,9 @@ export default {
       Token: "",
       ManagerUserData: {},
     };
+  },
+  change() {
+    this.$forceUpdate(); //强制刷新
   },
   created() {
     // this.loadInfoOfAdmin();
@@ -252,7 +272,7 @@ export default {
       //TODO
       this.$axios
         .patch("/api/user/update/password", {
-          user_id: 123, //TODO,
+          user_id: this.phonenumber, //TODO,
           new_password: this.new_password,
           send_code: this.send_code,
           user_code: this.vCode,
@@ -264,16 +284,24 @@ export default {
               type: "success",
             });
           }
+          else{
+            this.$message({
+              message:"更新失败"
+            })
+          }
         });
     },
     getvCode() {
+      console.log("getget");
       this.$axios.post(
         "/api/user/identify",
-        JSON.stringfy({
-          email: this.email,
-        }).then((response) => {
-          if (response.data.code == 200) {
+        {
+          email:this.email
+        }
+      ).then((response)=>{
+        if (response.data.code == 200) {
             this.vCode = response.data.vCode;
+            console.log(this.vCode)
             this.$message({
               message: "验证码发送成功",
               type: "success",
@@ -283,8 +311,7 @@ export default {
               message: "验证码发送失败",
             });
           }
-        })
-      );
+      })
     },
     userLogin() {
       this.$refs["loginUser"].validate((valid) => {
@@ -337,8 +364,7 @@ export default {
   background-image: url("../assets/loginimg.png");
   background-size: 100%;
 }
-.findcontent.input{
-  
+.findcontent.input {
 }
 .loginAndRegister {
   position: relative;
