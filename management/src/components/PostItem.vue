@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <span @click="emitDelete" class="rounded border px-2 py-1 text-sm text-white bg-red-400 active:bg-red-600">Delete</span>
+                <button @click="emitDelete" class="rounded border px-2 py-1 text-sm text-white bg-red-400 hover:bg-red-600">Delete</button>
             </div>
         </div>
     </div>
