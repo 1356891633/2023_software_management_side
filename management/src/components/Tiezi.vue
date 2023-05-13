@@ -16,7 +16,7 @@
                 <el-collapse v-model="activeNames">
                     <el-collapse-item title="未审核帖子" name="1">
                         <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
-                            <PostItem v-for="post in unCheckedPosts" :post-data="post"/>
+                            <PostItem v-for="post in unCheckedPosts" :post-data="post" @post-click="checkPost(post)" @post-delete="deletePost(post)" />
                         </div>
 
                         <!-- <el-card class="box-card" v-for="post in unCheckedPosts">
