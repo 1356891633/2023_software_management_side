@@ -16,6 +16,9 @@
                 <h>{{ postData.title }}</h>
                 <el-divider></el-divider>
                 <p>{{ postData.content }}</p>
+                <div v-for="img in postData.pics">
+                    <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                </div>
                 <el-form ref="form" :model="postData" label-width="80px">
                     <!-- <el-form-item label="帖子标题">
                         <el-input v-model="postData.title" placeholder=""></el-input>
@@ -23,11 +26,7 @@
                     <el-form-item label="帖子内容">
                         <el-input v-model="postData.content" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
-                    <el-form-item label="图片">
-                        <div v-for="img in postData.pics">
-                            <el-image style="width: 100px; height: 100px" :src="img"></el-image>
-                        </div>
-                    </el-form-item>
+                   
 
 
                     <el-form-item label="图片上传">
