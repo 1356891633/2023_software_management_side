@@ -96,6 +96,9 @@ export default ({
         editPost(item) {
             this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
         },
+        changeToTiezi() {
+            this.$router.push({ path: '/Tiezi', query: this.Token })
+        },
         getinfo() {
             this.$axios
                 .get("/api/user/info", {
