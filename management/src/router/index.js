@@ -15,7 +15,7 @@ export default new Router({
   routes:[
     {
       path: '/',
-      component:PostItem
+      component:LoginRegister
     },
     {
       path: '/MainGround',

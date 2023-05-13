@@ -15,7 +15,11 @@
             <el-main class="el-main">
                 <el-collapse v-model="activeNames">
                     <el-collapse-item title="未审核帖子" name="1">
-                        <el-card class="box-card" v-for="post in unCheckedPosts">
+                        <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
+                            <PostItem v-for="post in unCheckedPosts" :post-data="post"/>
+                        </div>
+
+                        <!-- <el-card class="box-card" v-for="post in unCheckedPosts">
                             <div slot="header" class="clearfix">
                                 <span>{{ post.title }}</span>
                                 <el-button style="float: right" type="primary" @click="checkPost(post)">审核</el-button>
@@ -31,10 +35,14 @@
                                     <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                                 </div>
                             </div>
-                        </el-card>
+                        </el-card> -->
                     </el-collapse-item>
                     <el-collapse-item title="已审核帖子" name="2">
-                        <el-card class="box-card" v-for="post in checkedPosts">
+                        <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
+                            <PostItem v-for="post in checkedPosts" :post-data="post" @post-click="editPost(post)" @post-delete="deletePost(post)"/>
+                        </div>
+                        
+                        <!-- <el-card class="box-card" v-for="post in checkedPosts">
                             <div slot="header" class="clearfix">
                                 <span>{{ post.title }}</span>
                                 <el-button style="float: right" type="primary" @click="editPost(post)">编辑</el-button>
@@ -51,7 +59,7 @@
                                 </div>
                             </div>
 
-                        </el-card>
+                        </el-card> -->
                     </el-collapse-item>
                 </el-collapse>
 
@@ -62,10 +70,12 @@
 </template>
 <script>
 import Navigator from './Navigator.vue'
+import PostItem from './PostItem.vue'
 export default ({
     name: "Tiezi",
     components: {
-        Navigator
+        Navigator,
+        PostItem
     },
     data() {
         return {

@@ -66,14 +66,7 @@ export default ({
             menuActivateIndex: "2",
 
             //TODO: to be modified
-            postData: {
-                title: "帖子标题1",
-
-                content: "帖子内容1",
-                pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
-                ]
-
-            },
+            postData: {},
         }
     },
     created() {
