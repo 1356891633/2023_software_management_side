@@ -21,9 +21,8 @@
               <div>
                 <p style="float: left; margin-left: 10px;">用户名：{{ item.user_name }}</p>
                 <p style="float: left; margin-left: 10px;">电话号码：{{ item.phone_number }}</p>
-                <p style="float: left; margin-left: 10px;">注册时间：{{ item.datetime }}</p>
 
-                <el-button @click="ChangeToAdmin(item)" class="button" type="success" size="small"
+                <el-button v-if="item.is_admin!==1" @click="ChangeToAdmin(item)" class="button" type="success" size="small"
                   icon="el-icon-edit">设为管理员</el-button>
                 <!-- <el-button @click="EditUser(item)" class="button" type="primary"
                   >编辑</el-button
@@ -139,7 +138,7 @@ export default {
     },
     ChangeToAdmin(item) {
       console.log("change");
-      this.$axios.patch(
+      this.$axios.post(
         "api/user/update/grant",
         {
           user_id: item.user_id,

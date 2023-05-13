@@ -5,6 +5,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './css/global.css'
+import "./css/tailwindcss.css"
 import axios from 'axios'
 
 Vue.prototype.$axios = axios

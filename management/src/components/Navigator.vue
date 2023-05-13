@@ -36,6 +36,9 @@ export default {
           this.ManagerUserData = response.data.data.user;
         });
     },
+    logout() {
+        
+    }
   },
 };
 </script>
