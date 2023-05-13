@@ -89,15 +89,6 @@
                     this.ManagerUserData=response.data.user;
             });
         },
-        changeToTiezi(){
-            this.$router.push({path:'/Tiezi',query:this.Token})
-        },
-        changeToDangan(){
-            this.$router.push({path:'/Dangan',query:this.Token})
-        },
-        changeToQiuzhu(){
-            this.$router.push({path:'/Qiuzhu',query:this.Token})
-        },
     },
 
     watch: {

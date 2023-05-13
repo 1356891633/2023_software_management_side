@@ -13,7 +13,11 @@ module.exports = {
                 logLevel:'debug',
             },
             '/post': {
-                target: 'https://114.116.211.142:80',
+                target: 'https://114.116.211.142',
+                changeOrigin: true,
+            },
+            '/animal' : {
+                target: 'https://114.116.211.142',
                 changeOrigin: true,
             }
         }

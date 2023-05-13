@@ -1,28 +1,15 @@
 <template>
     <el-container>
         <el-header class="el-header">
-            <div>
-                <span class="el-icon-lock" @click="logout()">
-                    退出登录
-                </span>
-                <el-divider direction="vertical"></el-divider>
-                <span class="el-icon-hello">
-                    账户: {{ ManagerUserData.user_name }} , 您好
-                </span>
-                <img src="/src/assets/school.png" alt="" />
-                <el-divider direction="vertical"></el-divider>
-            </div>
+            <Navigator />
         </el-header>
         <el-container>
             <el-aside width="200px" class="el-aside">
                 <el-menu :default-active="menuActivateIndex" mode="vertical" router>
-                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i
-                                class="el-icon-user"></i>用户管理</span></el-menu-item>
+                    <el-menu-item index="1" route="/MainGround"><i class="el-icon-user"></i>用户管理</el-menu-item>
                     <el-menu-item index="2" route="/Tiezi"><i class="el-icon-edit"></i>帖子管理</el-menu-item>
-                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i
-                                class="el-icon-menu"></i>档案管理</span></el-menu-item>
-                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i
-                                class="el-icon-help"></i>求助管理</span></el-menu-item>
+                    <el-menu-item index="3" route="/Dangan"><i class="el-icon-menu"></i>档案管理</el-menu-item>
+                    <el-menu-item index="4" route="/Qiuzhu"><i class="el-icon-help"></i>求助管理</el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
@@ -64,14 +51,17 @@
     </el-container>
 </template>
 <script>
-
+import Navigator from './Navigator.vue'
 export default ({
     name: "Tiezi",
+    components: {
+        Navigator
+    },
     data() {
         return {
             isEdit: this.$route.query.item,
             Token: "",
-            ManagerUserData: { 
+            ManagerUserData: {
                 // user_name: "123" 
             },
             menuActivateIndex: "2",
@@ -104,7 +94,7 @@ export default ({
                 auditData.opt = 0;
             }
 
-            this.$axios.patch('/api/post/audit', auditData, {
+            this.$axios.post('/api/post/audit', auditData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.jwt}`
                 }
@@ -123,19 +113,6 @@ export default ({
         },
         deletePost() {
 
-        },
-
-        changeToTiezi() {
-            this.$router.push({ path: '/Tiezi', query: this.Token })
-        },
-        changeToYonghu() {
-            this.$router.push({ path: '/MainGround', query: this.Token })
-        },
-        changeToDangan() {
-            this.$router.push({ path: '/Dangan', query: this.Token })
-        },
-        changeToQiuzhu() {
-            this.$router.push({ path: '/Qiuzhu', query: this.Token })
         },
         getinfo() {
             this.$axios

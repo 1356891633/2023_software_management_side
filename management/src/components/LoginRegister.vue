@@ -61,7 +61,8 @@
             <div class="title">找回密码</div>
             <div class="findcontent">
               <p>请输入你的账号邮箱</p>
-              <el-input :v-model="email" placeholder="请输入新邮箱" class="input"></el-input>
+              {{ email }}
+              <el-input v-model="email" placeholder="请输入新邮箱" class="input"></el-input>
               <el-input
                 :v-model="new_password"
                 placeholder="请输入新密码" class="input"

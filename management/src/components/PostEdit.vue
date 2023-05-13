@@ -1,28 +1,15 @@
 <template>
     <el-container>
         <el-header class="el-header">
-            <div>
-                <span class="el-icon-lock" @click="logout()">
-                    退出登录
-                </span>
-                <el-divider direction="vertical"></el-divider>
-                <span class="el-icon-hello">
-                    账户: {{ ManagerUserData.user_name }} , 您好
-                </span>
-                <img src="/src/assets/school.png" alt="" />
-                <el-divider direction="vertical"></el-divider>
-            </div>
+            <Navigator />
         </el-header>
         <el-container>
             <el-aside width="200px" class="el-aside">
                 <el-menu :default-active="menuActivateIndex" mode="vertical" router>
-                    <el-menu-item index="1" route="/MainGround"><span @click="changeToYonghu"><i
-                                class="el-icon-user"></i>用户管理</span></el-menu-item>
+                    <el-menu-item index="1" route="/MainGround"><i class="el-icon-user"></i>用户管理</el-menu-item>
                     <el-menu-item index="2" route="/Tiezi"><i class="el-icon-edit"></i>帖子管理</el-menu-item>
-                    <el-menu-item index="3" route="/Dangan"><span @click="changeToDangan"><i
-                                class="el-icon-menu"></i>档案管理</span></el-menu-item>
-                    <el-menu-item index="4" route="/Qiuzhu"><span @click="changeToQiuzhu"><i
-                                class="el-icon-help"></i>求助管理</span></el-menu-item>
+                    <el-menu-item index="3" route="/Dangan"><i class="el-icon-menu"></i>档案管理</el-menu-item>
+                    <el-menu-item index="4" route="/Qiuzhu"><i class="el-icon-help"></i>求助管理</el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
@@ -40,17 +27,8 @@
                     </el-form-item>
 
                     <el-form-item label="图片上传">
-                        <el-upload 
-                            class="img-upload" 
-                            drag 
-                            multiple 
-                            action
-                            :file-list="picUrls"
-                            :http-request="uploadPic"
-                            :on-remove="handleRemove"
-                            :before-upload="beforeUpload"
-                            
-                            >
+                        <el-upload class="img-upload" drag multiple action :file-list="picUrls" :http-request="uploadPic"
+                            :on-remove="handleRemove" :before-upload="beforeUpload">
                             <i class=" el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -67,16 +45,19 @@
     </el-container>
 </template>
 <script>
-
+import Navigator from './Navigator.vue'
 export default ({
     name: "Tiezi",
+    components: {
+        Navigator
+    },
     data() {
         return {
-            fileSize:500,//图片大小限制500k
-            fileType:["png","jpg"],//允许的图片格式
+            fileSize: 500,//图片大小限制500k
+            fileType: ["png", "jpg"],//允许的图片格式
             isEdit: this.$route.query.item,
             Token: "",
-            ManagerUserData: { 
+            ManagerUserData: {
                 // user_name: "123" 
             },
             menuActivateIndex: "2",
@@ -84,7 +65,7 @@ export default ({
             //TODO: to be modified
             postData: {
             },
-            picUrls:[]
+            picUrls: []
         }
     },
     created() {
@@ -98,7 +79,7 @@ export default ({
                 post_id: this.postData.post_id,
                 title: this.postData.title,
                 content: this.postData.content,
-                pics:this.picUrls //TODO:
+                pics: this.picUrls //TODO:
             }
             this.$axios.post('/api/post/update', updateData, {
                 headers: {
@@ -115,21 +96,6 @@ export default ({
         editPost(item) {
             this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
         },
-        deletePost() {
-
-        },
-        changeToTiezi() {
-            this.$router.push({ path: '/Tiezi', query: this.Token })
-        },
-        changeToYonghu() {
-            this.$router.push({ path: '/MainGround', query: this.Token })
-        },
-        changeToDangan() {
-            this.$router.push({ path: '/Dangan', query: this.Token })
-        },
-        changeToQiuzhu() {
-            this.$router.push({ path: '/Qiuzhu', query: this.Token })
-        },
         getinfo() {
             this.$axios
                 .get("/api/user/info", {
@@ -145,23 +111,23 @@ export default ({
             // if(file.type == "" || file.type == null || file.type == undefined) {
             //     return false;
             // }
-            const FileExt = file.name.replace(/.+\./,"").toLowerCase();
+            const FileExt = file.name.replace(/.+\./, "");
 
-            const isLt500K = (file.size /1024) < 500
+            const isLt500K = (file.size / 1024) < 500
 
             if (!isLt500K) {
                 this.$message({
-                    message:'上传文件大小不能超过500k!',
-                    type:'error'
+                    message: '上传文件大小不能超过500k!',
+                    type: 'error'
                 });
                 return false;
             }
 
             console.log(FileExt)
-            if(!this.fileType.includes(FileExt)) {
+            if (!this.fileType.includes(FileExt)) {
                 this.$message({
-                    message:'上传文件格式不正确!',
-                    type:'error'
+                    message: '上传文件格式不正确!',
+                    type: 'error'
                 });
                 return false;
             }
@@ -169,11 +135,12 @@ export default ({
         },
         uploadPic(item) {
             let formDatas = new FormData();
-            formDatas.append('pic',item.file);
+            formDatas.append('pic', item.file);
+            formDatas.append('opt', 0);
             this.$axios.post("/api/pic/upload", formDatas, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.jwt}`,
-                    "Content-Type": "multipart/form-data" 
+                    "Content-Type": "multipart/form-data"
                 }
             }).then(response => {
                 // console.log(response)
