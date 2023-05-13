@@ -59,29 +59,33 @@
         >
           <div v-show="!isShow">
             <div class="title">找回密码</div>
-            <div class="findcontent">
+            <div >
               <p>请输入你的账号邮箱</p>
               <el-form>
-                <el-input
+                <div class="findcontent">
+                  
+                 <el-input
                   v-model="email"
-                  placeholder="请输入新邮箱"
+                  placeholder="请输入邮箱"
                   class="input"
-                ></el-input>
-                <el-input
+                  size="medium"
+                ></el-input></div>
+                <div class="findcontent"><el-input
                   v-model="phonenumber"
                   placeholder="请输入电话号码"
                   class="input"
-                ></el-input>
-                <el-input
+                ></el-input></div>
+                <div class="findcontent"> <el-input
                   v-model="new_password"
                   placeholder="请输入新密码"
                   class="input"
-                ></el-input>
+                ></el-input></div>
+                <div class="findcontent"> 
                 <el-input
                   v-model="userCode"
                   placeholder="验证码"
                   class="input"
-                ></el-input>
+                ></el-input></div>
               </el-form>
               <el-button @click="getvCode()">点击获取验证码</el-button>
               <el-button @click="modify()">确认</el-button>
@@ -271,12 +275,12 @@ export default {
     modify() {
       //TODO
       this.$axios
-        .patch("/api/user/update/password", {
-          user_id: this.phonenumber, //TODO,
+        .post("/api/user/update/password", JSON.stringify( {
+          phone_number: this.phonenumber, //TODO,
           new_password: this.new_password,
-          send_code: this.send_code,
-          user_code: this.vCode,
-        })
+          send_code: this.vCode,
+          user_code: this.userCode,
+        }))
         .then((response) => {
           if (response.data.code == 200) {
             this.$message({
@@ -364,8 +368,24 @@ export default {
   background-image: url("../assets/loginimg.png");
   background-size: 100%;
 }
-.findcontent.input {
+.findcontent {
+  margin-top:10px;
+  background-color: #f5f5f5;
+  
 }
+.findcontent span {
+  background-color: #e8b4b4;
+  height:35px;
+  margin-left: 20px;
+  float: left;
+  text-align: center;
+
+}
+.findcontent input{
+  
+  width:100%;
+}
+
 .loginAndRegister {
   position: relative;
   display: flex;
