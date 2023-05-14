@@ -19,6 +19,10 @@ module.exports = {
             '/animal' : {
                 target: 'https://114.116.211.142',
                 changeOrigin: true,
+            },
+            '/user' : {
+                target: 'https://114.116.211.142',
+                changeOrigin: true,
             }
         }
     }

@@ -1,14 +1,14 @@
 <template>
     <!-- product - start -->
     <div>
-        <a class="group mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+        <a class="cursor-pointer group mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
             <img @click="emitClick" :src="archiveFirstPic" loading="lazy" alt="Photo by Austin Wade"
                 class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
         </a>
         <div class="flex flex-row items-end justify-evenly content-end">
             <div class="flex flex-col">
             <span class="text-gray-500">{{ archiveData.animal_type }}</span>
-            <a @click="emitClick" class="text-lg font-bold text-gray-800 transition duration-100 hover:text-gray-500 lg:text-xl">{{
+            <a @click="emitClick" class="cursor-pointer text-lg font-bold text-gray-800 transition duration-100 hover:text-gray-500 lg:text-xl">{{
                 archiveData.animal_name }}</a>
             
         </div>

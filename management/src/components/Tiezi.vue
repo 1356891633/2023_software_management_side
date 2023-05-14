@@ -16,7 +16,7 @@
                 <el-collapse v-model="activeNames">
                     <el-collapse-item title="未审核帖子" name="1">
                         <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
-                            <PostItem v-for="post in unCheckedPosts" :post-data="post" @post-click="checkPost(post)" @post-delete="deletePost(post)" />
+                            <PostItem v-for="post in unCheckedPosts" :post-data="post"  v-bind="getAuthorData(post)" @post-click="checkPost(post)" @post-delete="deletePost(post)" />
                         </div>
 
                         <!-- <el-card class="box-card" v-for="post in unCheckedPosts">
@@ -39,7 +39,7 @@
                     </el-collapse-item>
                     <el-collapse-item title="已审核帖子" name="2">
                         <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
-                            <PostItem v-for="post in checkedPosts" :post-data="post" @post-click="editPost(post)" @post-delete="deletePost(post)"/>
+                            <PostItem v-for="post in checkedPosts" :post-data="post" v-bind="getAuthorData(post)" @post-click="editPost(post)" @post-delete="deletePost(post)"/>
                         </div>
                         
                         <!-- <el-card class="box-card" v-for="post in checkedPosts">
@@ -79,6 +79,7 @@ export default ({
     },
     data() {
         return {
+            curAuthorData:{},
             Token: "",
             ManagerUserData: {
                 // user_name: "123" 
@@ -125,6 +126,18 @@ export default ({
         // this.$nextTick(getPosts());
     },
     methods: {
+        getAuthorData(post) {
+            this.$axios.get('/api/user/view',{
+                params:{
+                    user_id:post.author_id
+                }
+            }).then((response)=>{
+                this.curAuthorData = response.data
+                
+            }).catch(()=>{
+            })
+            return this.curAuthorData
+        },
         editPost(item) {
             this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
             console.log(item)

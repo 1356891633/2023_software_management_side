@@ -1,29 +1,28 @@
 <template>
     <!-- article - start -->
     <div class="flex flex-col overflow-hidden rounded-lg border bg-white">
-        <a @click="emitClick" class="group relative block h-48 overflow-hidden bg-gray-100 md:h-64">
+        <a @click="emitClick" class="cursor-pointer group relative block h-48 overflow-hidden bg-gray-100 md:h-64">
             <img :src="postFirstPic"
                 loading="lazy" alt="加载失败"
                 class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
         </a>
 
         <div class="flex flex-1 flex-col p-4 sm:p-6">
-            <h2 class="mb-2 text-lg font-semibold text-gray-800">
+            <h2 class="mb-2 text-lg font-semibold text-gray-800 cursor-pointer">
                 <a @click="emitClick" class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">{{ postData.title }}</a>
             </h2>
 
             <p class="mb-8 text-gray-500 truncate ...">{{ postData.content }}</p>
-
+            
             <div class="mt-auto flex items-end justify-between">
                 <div class="flex items-center gap-2">
                     <div class="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1592660503155-7599a37f06a6?auto=format&q=75&fit=crop&w=64"
+                        <img :src="avatar"
                             loading="lazy" alt="Photo by Jassir Jonis" class="h-full w-full object-cover object-center" />
                     </div>
-
                     <div>
-                        <span class="block text-indigo-500">Tylor Grey</span>
-                        <span class="block text-sm text-gray-400">March 15, 2021</span>
+                        <span class="block text-indigo-500">{{ name }}</span>
+                        <span class="block text-sm text-gray-400">{{ postData.time | FormatDate('yyyy-MM-dd')}}</span>
                     </div>
                 </div>
 
@@ -37,7 +36,7 @@
 <script>
 export default {
     name: 'PostItem',
-    props:['postData'],
+    props:['postData','avatar','name'],
     data() {
         return {
             // postData:{
@@ -48,13 +47,14 @@ export default {
             //     ]
 
             // },
-            authorData: {
-                
-            }
+            // authorData: {
+            // "user_name": "lxy",
+            // "avatar": "/user/sb.png"
+            // }
         }
     },
     created() {
-
+        console.log(this.avatar)
     },
     methods: {
         emitClick() {
@@ -71,6 +71,39 @@ export default {
         postFirstPic() {
             return this.postData.pics[0]
         }
+    },
+    filters: {
+        FormatDate: function(value,args) {
+            var dt = new Date(value);
+            if(args == 'yyyy-M-d') {// yyyy-M-d
+            let year = dt.getFullYear();
+            let month = dt.getMonth() + 1;
+            let date = dt.getDate();
+            return `${year}-${month}-${date}`;
+        } else if(args == 'yyyy-M-d H:m:s'){// yyyy-M-d H:m:s
+            let year = dt.getFullYear();
+            let month = dt.getMonth() + 1;
+            let date = dt.getDate();
+            let hour = dt.getHours();
+            let minute = dt.getMinutes();
+            let second = dt.getSeconds();
+            return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+        } else if(args == 'yyyy-MM-dd') {// yyyy-MM-dd
+            let year = dt.getFullYear();
+            let month = (dt.getMonth() + 1).toString().padStart(2,'0');
+            let date = dt.getDate().toString().padStart(2,'0');
+            return `${year}-${month}-${date}`;
+        } else {// yyyy-MM-dd HH:mm:ss
+            let year = dt.getFullYear();
+            let month = (dt.getMonth() + 1).toString().padStart(2,'0');
+            let date = dt.getDate().toString().padStart(2,'0');
+            let hour = dt.getHours().toString().padStart(2,'0');
+            let minute = dt.getMinutes().toString().padStart(2,'0');
+            let second = dt.getSeconds().toString().padStart(2,'0');
+            return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+        }
+        }
+
     }
 }
 
