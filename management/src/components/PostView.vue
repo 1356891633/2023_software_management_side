@@ -58,18 +58,6 @@ export default ({
         deletePost() {
 
         },
-        changeToTiezi() {
-            this.$router.push({ path: '/Tiezi', query: this.Token })
-        },
-        changeToYonghu() {
-            this.$router.push({ path: '/MainGround', query: this.Token })
-        },
-        changeToDangan() {
-            this.$router.push({ path: '/Dangan', query: this.Token })
-        },
-        changeToQiuzhu() {
-            this.$router.push({ path: '/Qiuzhu', query: this.Token })
-        },
         getinfo() {
             this.$axios.get("/api/user/info", {
                 headers: {
