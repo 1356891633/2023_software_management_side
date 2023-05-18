@@ -96,33 +96,34 @@
                   </div>
                   <span slot="footer" class="dialog-footer">
                     <el-button @click="editVisible = false">取消</el-button>
-                    <el-button type="primary" @click="innerEditVisible = true">编辑</el-button>
+                    <el-button type="primary" @click="openInnerEdit()">编辑</el-button>
                   </span>
                   <el-dialog title="编辑信息" :visible.sync="innerEditVisible" width="65%" append-to-body="true">
-                    <el-form ref="editForm" label-width="80px">
-                      <el-form-item label="动物姓名" prop="name">
-                        <el-input v-model="createForm.animal_name"></el-input>
+                    <el-form ref="editForm" label-width="80px" :model="editForm">
+                      <!-- {{ editForm }} -->
+                      <el-form-item label="动物姓名" prop="animal_name">
+                        <el-input v-model="editForm.animal_name"></el-input>
                       </el-form-item>
-                      <el-form-item label="动物性别" prop="sex">
-                        <el-radio-group v-model="createForm.animal_sex">
+                      <el-form-item label="动物性别" prop="animal_sex">
+                        <el-radio-group v-model="editForm.animal_sex">
                           <el-radio :label="0">雄性</el-radio>
                           <el-radio :label="1">雌性</el-radio>
                         </el-radio-group>
                       </el-form-item>
                       <el-form-item label="动物描述" prop="content">
-                        <el-input v-model="createForm.content" type="textarea" :rows="10" autosize></el-input>
+                        <el-input v-model="editForm.content" type="textarea" :rows="10" autosize></el-input>
                       </el-form-item>
                       <el-form-item label="动物状态" prop="status">
-                        <el-radio-group v-model="createForm.animal_status">
+                        <el-radio-group v-model="editForm.status">
                           <el-radio :label="0" border>未领养</el-radio>
                           <el-radio :label="1" border>已领养</el-radio>
                         </el-radio-group>
                       </el-form-item>
                       <el-form-item label="动物种类" prop="animal_type">
-                        <el-input v-model="createForm.animal_type"></el-input>
+                        <el-input v-model="editForm.animal_type"></el-input>
                       </el-form-item>
                       <el-form-item label="图片上传">
-                        <el-upload class="img-upload" drag multiple action :file-list="createForm.pics"
+                        <el-upload class="img-upload" drag multiple action :file-list="editForm.pics"
                           :http-request="uploadPic" :on-remove="handleRemove" :before-upload="beforeUpload">
                           <i class=" el-icon-upload"></i>
                           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -166,7 +167,7 @@
                     <p>领养动物信息:</p>
                     <p>动物名字:{{ reqAnimal.animal_name }}</p>
                     <p>性别:{{ reqAnimal.animal_sex }}</p>
-                    <p>动物介绍:{{ reqAnimal.animal_content }}</p>
+                    <p>动物介绍:{{ reqAnimal.content }}</p>
                     <p>动物种类：{{ reqAnimal.animal_type }} </p>
                   </div>
                 </el-col>
@@ -232,6 +233,7 @@ export default {
         animal_type: "",
         pics: []
       },
+      editForm:{},
       reqUser: "",
       reqAnimal: "",
       activeReq: "",
@@ -345,18 +347,24 @@ export default {
       this.activeArchive = archive;
       this.editVisible = true;
     },
+    openInnerEdit() {
+      this.innerEditVisible = true
+      this.editForm = JSON.parse(JSON.stringify(this.activeArchive))
+      
+      console.log(this.editForm)
+    },
     editArchive(activeArchive) {
       this.$axios
         .post(
           "/api/animal/update",
           {
             animal_id: activeArchive.animal_id,
-            animai_sex: this.createForm.animal_sex,
-            content: this.createForm.content,
-            animal_name: this.createForm.animal_name,
-            animal_status: this.createForm.animal_status,
-            animal_type: this.createForm.animal_type,
-            pics: this.createForm.pics
+            animai_sex: this.editForm.animal_sex,
+            content: this.editForm.content,
+            animal_name: this.editForm.animal_name,
+            animal_status: this.editForm.status,
+            animal_type: this.editForm.animal_type,
+            pics: this.editForm.pics
           },
           {
             headers: {

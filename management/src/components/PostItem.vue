@@ -17,11 +17,11 @@
             <div class="mt-auto flex items-end justify-between">
                 <div class="flex items-center gap-2">
                     <div class="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-100">
-                        <img :src="avatar"
+                        <img :src="authorData.avatar"
                             loading="lazy" alt="Photo by Jassir Jonis" class="h-full w-full object-cover object-center" />
                     </div>
                     <div>
-                        <span class="block text-indigo-500">{{ name }}</span>
+                        <span class="block text-indigo-500">{{ authorData.name }}</span>
                         <span class="block text-sm text-gray-400">{{ postData.time | FormatDate('yyyy-MM-dd')}}</span>
                     </div>
                 </div>
@@ -51,10 +51,13 @@ export default {
             // "user_name": "lxy",
             // "avatar": "/user/sb.png"
             // }
+            authorData:{}
         }
     },
     created() {
-        console.log(this.avatar)
+        
+        
+        console.log(this.authorData)
     },
     methods: {
         emitClick() {
@@ -62,10 +65,21 @@ export default {
         },
         emitDelete() {
             this.$emit('post-delete');
-        }
+        },
+        getAuthorData(post) {
+            this.$axios.get('/api/user/view',{
+                params:{
+                    user_id:post.author_id
+                }
+            }).then((response)=>{
+                this.authorData = response.data
+                
+            }).catch(()=>{
+            })
+        },
     },
     mounted() {
-
+        this.authorData=this.getAuthorData(this.postData)
     },
     computed: {
         postFirstPic() {
