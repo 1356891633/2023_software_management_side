@@ -21,22 +21,22 @@
             </div>
 
             <!-- <el-card class="box-card" v-for="post in unCheckedPosts">
-                            <div slot="header" class="clearfix">
-                                <span>{{ post.title }}</span>
-                                <el-button style="float: right" type="primary" @click="checkPost(post)">审核</el-button>
-                                <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
-                            </div>
-                            <div>
-                                {{ post.content }}
-                            </div>
+                    <div slot="header" class="clearfix">
+                        <span>{{ post.title }}</span>
+                        <el-button style="float: right" type="primary" @click="checkPost(post)">审核</el-button>
+                        <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
+                    </div>
+                    <div>
+                        {{ post.content }}
+                    </div>
 
-                            <div
-                                v-if="post.pics != None && post.pics.length != 0 && (post.pics.length != 1 || post.pics[0].length != 0)">
-                                <div class="block" style="display: inline-block;" v-for="img in post.pics">
-                                    <el-image style="width: 100px; height: 100px" :src="img"></el-image>
-                                </div>
-                            </div>
-                        </el-card> -->
+                    <div
+                        v-if="post.pics != None && post.pics.length != 0 && (post.pics.length != 1 || post.pics[0].length != 0)">
+                        <div class="block" style="display: inline-block;" v-for="img in post.pics">
+                            <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                        </div>
+                    </div>
+                </el-card> -->
           </el-collapse-item>
           <el-collapse-item title="已审核帖子" name="2">
             <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
@@ -45,23 +45,22 @@
             </div>
 
             <!-- <el-card class="box-card" v-for="post in checkedPosts">
-                            <div slot="header" class="clearfix">
-                                <span>{{ post.title }}</span>
-                                <el-button style="float: right" type="primary" @click="editPost(post)">编辑</el-button>
-                                <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
-                            </div>
-                            <div>
-                                {{ post.content }}
-                            </div>
-                            <div
-                                v-if="post.pics != None && post.pics.length != 0 && (post.pics.length != 1 || post.pics[0].length != 0)">
-                                <div class="block" style="display: inline-block; margin: 10 10 10 10;"
-                                    v-for="img in post.pics">
-                                    <el-image style="width: 100px; height: 100px" :src="img"></el-image>
-                                </div>
-                            </div>
-
-                        </el-card> -->
+                  <div slot="header" class="clearfix">
+                      <span>{{ post.title }}</span>
+                      <el-button style="float: right" type="primary" @click="editPost(post)">编辑</el-button>
+                      <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
+                  </div>
+                  <div>
+                      {{ post.content }}
+                  </div>
+                  <div
+                      v-if="post.pics != None && post.pics.length != 0 && (post.pics.length != 1 || post.pics[0].length != 0)">
+                      <div class="block" style="display: inline-block; margin: 10 10 10 10;"
+                          v-for="img in post.pics">
+                          <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                      </div>
+                  </div>
+              </el-card> -->
           </el-collapse-item>
         </el-collapse>
 
@@ -97,7 +96,6 @@ export default ({
         //     pics: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
         //     postTime: "",
         //     status: "0"
-
         // },
         // {
         //     post_id: 2,
@@ -108,33 +106,32 @@ export default ({
         //     status: "2"
         // }
       ],
-      activeNames: ["1", "2"]
-    }
+      activeNames: ["1", "2"],
+    };
   },
   computed: {
     checkedPosts() {
-      return this.postDatas.filter(post => post.status == 2)
+      return this.postDatas.filter((post) => post.status == 2);
     },
     unCheckedPosts() {
-      return this.postDatas.filter(post => post.status == 0)
+      return this.postDatas.filter((post) => post.status == 0);
     },
   },
   created() {
     // this.Token = this.$query;
-    console.log('create')
+    console.log("create");
     this.getinfo();
     this.getPosts();
     this.getPosts();
     // this.$nextTick(getPosts());
   },
   methods: {
-
     editPost(item) {
-      this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });
-      console.log(item)
+      this.$router.push({ path: "/PostEdit", query: { Item: item, ManagerToken: this.Token } });
+      console.log(item);
     },
     checkPost(item) {
-      this.$router.push({ path: '/PostCheck', query: { Item: item, ManagerToken: this.Token } });
+      this.$router.push({ path: "/PostCheck", query: { Item: item, ManagerToken: this.Token } });
     },
     deletePost(post) {
       this.$axios.delete("/api/post", {
@@ -161,10 +158,10 @@ export default ({
           sort: "created_at"
         },
         headers: {
-          'Authorization': `Bearer ${localStorage.jwt}`
+          Authorization: `Bearer ${localStorage.jwt}`
         }
       }).then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         this.postDatas = response.data.data.posts;
       }).catch((response) => {
 
