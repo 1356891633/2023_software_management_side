@@ -344,10 +344,20 @@ export default {
                 }, 500);
               } else {
                 //error message
+                
               }
             })
             .catch((response) => {
-              console.log(response);
+              let resData = response.response.data;
+              console.log(resData);
+              if(resData.code == 400) {
+                this.$message({
+                  message: "用户名或密码错误",
+                  type: "warning",
+                });
+               this.loginUser.user_password="";
+              }
+              
             });
         } else {
           console.log("error submit!!");

@@ -149,7 +149,10 @@ export default {
             Authorization: `Bearer ${localStorage.jwt}`,
           },
         }
-      );
+      ).then((response)=>{
+        this.getdata();
+      });
+      
     },
     SearchUser() { },
     getdata() {
