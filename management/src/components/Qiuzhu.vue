@@ -15,16 +15,19 @@
       <el-main>
         <el-collapse v-model="activeNames">
           <el-collapse-item title="求助信息" name="1">
-            <el-card class="box-card" v-for="post in checkedPosts">
+            <el-card class="box-card" v-for="post in uncheckedPosts">
               <div class="clearfix">
                 <span>{{ post.title }}</span>
                 <el-button style="float: right" type="primary" @click="viewHelpPost(post)">查看</el-button>
                 <el-button style="float: right" type="danger" @click="deletePost(post)">删除</el-button>
               </div>
-              <el-dialog title="默认标题" :visible.sync="dialogVisible" width="70%" show-close>
+              
+            </el-card>
+            <el-dialog title="默认标题" :visible.sync="dialogVisible" width="70%" show-close>
                 <span slot="title">{{ activeHelpPost.title }}</span>
                 <div>{{ activeHelpPost.content }}</div>
                 <div style="display: inline-block" v-for="img in activeHelpPost.pics">
+                  {{ activeHelpPost }}
                   <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                 </div>
                 <span slot="footer" class="dialog-footer">
@@ -45,7 +48,6 @@
                   </el-form-item>
                 </el-form>
               </el-dialog>
-            </el-card>
           </el-collapse-item>
         </el-collapse>
       </el-main>
@@ -99,11 +101,28 @@ export default {
     this.getHelpPosts();
   },
   computed: {
-    checkedPosts() {
+    uncheckedPosts() {
       return this.helpPosts.filter(post => post.status == 0)
     }
   },
   methods: {
+    deletePost(post) {
+      this.$axios.delete("/api/post", {
+        data: {
+          post_id: post.post_id,
+          user_id: Number(localStorage.user_id)//?
+        },
+        headers: {
+          'Authorization': `Bearer ${localStorage.jwt}`
+        }
+      }).then((response) => {
+        this.getHelpPosts();
+      }).catch((response) => {
+
+      }).then(() => {
+        
+      });
+    },
     sendComment(activeHelpPost) {
       console.log("1");
       this.$axios
