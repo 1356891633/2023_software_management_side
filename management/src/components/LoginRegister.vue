@@ -77,6 +77,7 @@
                 ></el-input></div>
                 <div class="findcontent"> <el-input
                   v-model="new_password"
+                  show-password
                   placeholder="请输入新密码"
                   class="input"
                 ></el-input></div>
@@ -374,7 +375,6 @@ export default {
   
 }
 .findcontent span {
-  background-color: #e8b4b4;
   height:35px;
   margin-left: 20px;
   float: left;
