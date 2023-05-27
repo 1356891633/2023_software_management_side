@@ -161,6 +161,7 @@ export default {
         .then((response) => {
           this.getHelpPosts();
           console.log(response.data.code);
+          this.dialogVisible = false
         });
     },
     updateStatus(val) {

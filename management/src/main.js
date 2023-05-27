@@ -13,7 +13,21 @@ Vue.prototype.$axios = axios
 Vue.use(ElementUI)
 // axios.defaults.baseURL='/api'
 Vue.config.productionTip = false
-
+router.beforeEach((to,from,next) => {
+  if(to.matched.some(res => res.meta.auth)) {
+    let jwt = localStorage.jwt;
+    if(jwt){
+      next()
+    } else {
+      next({
+        path:'/',
+        redirect:'/MainGround'
+      })
+    }
+  } else {
+    next();
+  }
+})
 new Vue({
   router,
   store,

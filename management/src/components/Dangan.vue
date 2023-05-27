@@ -166,7 +166,7 @@
                   <div>
                     <p>领养动物信息:</p>
                     <p>动物名字:{{ reqAnimal.animal_name }}</p>
-                    <p>性别:{{ reqAnimal.animal_sex }}</p>
+                    <p>性别:{{ animalSex(reqAnimal.animal_sex) }}</p>
                     <p>动物介绍:{{ reqAnimal.content }}</p>
                     <p>动物种类：{{ reqAnimal.animal_type }} </p>
                   </div>
@@ -434,8 +434,6 @@ export default {
       let temp_archive = this.animalArchives[idx];
 
       this.reqAnimal = temp_archive;
-      console.log("thatReq");
-      console.log(req);
       this.$axios
         .get("/api/user/table", {
           params: {
@@ -453,8 +451,6 @@ export default {
             (user) => Number(user.user_id) === Number(req.user_id)
           );
           let thatUser = tempUserList[userIdx];
-          console.log("thatUser");
-          console.log(thatUser);
           this.reqUser = thatUser;
         });
     },

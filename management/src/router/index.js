@@ -19,31 +19,52 @@ export default new Router({
     },
     {
       path: '/MainGround',
+      meta: { 
+        auth: true
+      },
       component:MainGround
     },
     {
       path: '/Tiezi',
+      meta: { 
+        auth: true
+      },
       component:Tiezi
     },
     {
       path: '/Dangan',
+      meta: { 
+        auth: true
+      },
       component:Dangan
     },
     {
       path: '/Qiuzhu',
+      meta: { 
+        auth: true
+      },
       component:Qiuzhu
     },
     {
       path: '/UserEdit',
+      meta: { 
+        auth: true
+      },
       component:UserEdit
     },
     {
       path:'/PostEdit',
       name:"PostEdit",
+      meta: { 
+        auth: true
+      },
       component:PostEdit
     },
     {
       path:'/PostCheck',
+      meta: { 
+        auth: true
+      },
       component:PostCheck
     }
   ]
