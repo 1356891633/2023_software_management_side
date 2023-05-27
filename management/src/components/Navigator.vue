@@ -14,8 +14,9 @@
     <img src="/src/assets/school.png" alt="" />
     <el-divider direction="vertical"></el-divider>
     <el-drawer title="通知" :visible.sync="drawer" @opened="openedNotice()" :before-close="handleClose">
-      <div v-for="(notice,idx) in curUserNnotices">
-        
+      <div v-for="(notice,idx) in notices">
+        {{ notice.content }}
+        <el-button type="success" icon="el-icon-check" circle @click="readNotice(idx)"></el-button>
       </div>
     </el-drawer>
   </div>
@@ -32,7 +33,7 @@ export default {
     };
   },
   computed:{
-    curUserNnotices() {
+    curUserNotices() {
       return this.notices.filter(notice => notice.user_id === this.ManagerUserData.usur_id);
     }
   },
@@ -41,6 +42,9 @@ export default {
     this.getdata();
   },
   methods: {
+    readNotice() {
+
+    },
     openedNotice() {
       this.$axios.get("/api/notice/table",{
         headers:{

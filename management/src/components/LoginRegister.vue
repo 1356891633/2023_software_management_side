@@ -224,6 +224,11 @@ export default {
             message: "密码不能为空",
             trigger: "blur",
           },
+          {
+            min:6,
+            message: "密码长度不小于6位",
+            trigger: "blur"
+          }
         ],
       },
       styleObj: {
@@ -350,12 +355,14 @@ export default {
             .catch((response) => {
               let resData = response.response.data;
               console.log(resData);
-              if(resData.code == 400) {
-                this.$message({
-                  message: "用户名或密码错误",
-                  type: "warning",
-                });
+              if(resData.code >= 400 && resData.code < 500) {
+                this.$message.warning("用户名或密码错误");
                this.loginUser.user_password="";
+              } else if(resData.code >= 500) {
+                this.$message({
+                  message: "服务器故障，请稍后再试",
+                  type: "error",
+                });
               }
               
             });

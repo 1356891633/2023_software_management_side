@@ -80,10 +80,13 @@ export default ({
                 post_id: this.postData.post_id,
                 opt: ""
             }
+            let n_content = "";
             if (passFlag) {
                 auditData.opt = 1;
+                n_content="帖子审核通过";
             } else {
                 auditData.opt = 0;
+                n_content="帖子审核未通过";
             }
 
             this.$axios.post('/api/post/audit', auditData, {
@@ -93,6 +96,15 @@ export default ({
             }
             ).then((response) => {
                 this.changeToTiezi()
+                this.$axios.post("/api/notice",{
+                    user_id:auditData.user_id,
+                    title:"帖子审核结果通知",
+                    content:n_content,
+                    },{
+                        headers: {
+                            Authorization: `Bearer ${localStorage.jwt}`,
+                        },
+                    })
             }).catch(
 
             ).then(

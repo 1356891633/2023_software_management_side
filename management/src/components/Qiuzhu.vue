@@ -27,7 +27,7 @@
                 <span slot="title">{{ activeHelpPost.title }}</span>
                 <div>{{ activeHelpPost.content }}</div>
                 <div style="display: inline-block" v-for="img in activeHelpPost.pics">
-                  {{ activeHelpPost }}
+                  <!-- {{ activeHelpPost }} -->
                   <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                 </div>
                 <span slot="footer" class="dialog-footer">
@@ -162,6 +162,15 @@ export default {
           this.getHelpPosts();
           console.log(response.data.code);
           this.dialogVisible = false
+          this.$axios.post("/api/notice",{
+            user_id:Number(localStorage.user_id),
+            title:"求助审核结果通知",
+            content:"求助内容已处理",
+          },{
+            headers: {
+              Authorization: `Bearer ${localStorage.jwt}`,
+            },
+          })
         });
     },
     updateStatus(val) {

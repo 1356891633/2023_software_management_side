@@ -140,7 +140,7 @@
 
 
           <el-collapse-item title="流浪动物领养申请" name="2">
-            <el-card class="box-card" v-for="req in animalAdoptRequests">
+            <el-card class="box-card" v-for="req in uncheckedAnimalAdoptRequests">
               <div class="clearfix">
                 <span>有关申请领养
                   {{ getAnimalName(req.animal_id) }}
@@ -234,7 +234,12 @@ export default {
         pics: []
       },
       editForm:{},
-      reqUser: "",
+      reqUser: {
+        user_name:"",
+        real_name:"",
+        phone_number:"",
+        email:""
+      },
       reqAnimal: "",
       activeReq: "",
     };
@@ -245,6 +250,9 @@ export default {
     this.getReq();
   },
   computed: {
+    uncheckedAnimalAdoptRequests() {
+      return this.animalAdoptRequests.filter(req => req.status === 0);
+    },
     animalSex() {
       return (sexType) => {
         if (sexType == 0) {
@@ -279,7 +287,7 @@ export default {
         (archive) => Number(archive.animal_id) == Number(cur_animal_id)
       );
       let temp_archive = this.animalArchives[idx];
-      console.log(temp_archive);
+      // console.log(temp_archive);
       if (temp_archive) {
         return temp_archive.animal_name;
       }
@@ -340,6 +348,21 @@ export default {
         },
       }).then(() => {
         this.getReq();
+        let n_content="";
+        if (passFlag) {
+          n_content="领养申请通过";
+        } else {
+          n_content="领养申请未通过";
+        }
+        this.$axios.post("/api/notice",{
+          user_id:this.reqUser.user_id,
+          title:"领养申请审核结果通知",
+          content:n_content,
+        },{
+          headers: {
+            Authorization: `Bearer ${localStorage.jwt}`,
+          },
+        })
       });
 
     },
@@ -351,7 +374,7 @@ export default {
       this.innerEditVisible = true
       this.editForm = JSON.parse(JSON.stringify(this.activeArchive))
       
-      console.log(this.editForm)
+      // console.log(this.editForm)
     },
     editArchive(activeArchive) {
       this.$axios
@@ -373,7 +396,7 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response.data.code);
+          // console.log(response.data.code);
           this.innerEditVisible = false;
           this.editVisible = false;
           this.getAnimalArchive();
@@ -414,7 +437,7 @@ export default {
         )
         .then((response) => {
           this.getAnimalArchive();
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch();
 
@@ -450,8 +473,11 @@ export default {
           let userIdx = tempUserList.findIndex(
             (user) => Number(user.user_id) === Number(req.user_id)
           );
-          let thatUser = tempUserList[userIdx];
-          this.reqUser = thatUser;
+          if(userIdx) {
+            let thatUser = tempUserList[userIdx];
+            this.reqUser = thatUser;
+          }
+          
         });
     },
     getinfo() {
@@ -481,7 +507,7 @@ export default {
         return false;
       }
 
-      console.log(FileExt)
+      // console.log(FileExt)
       if (!this.fileType.includes(FileExt)) {
         this.$message({
           message: '上传文件格式不正确!',
@@ -495,14 +521,14 @@ export default {
       let formDatas = new FormData();
       formDatas.append('pic', item.file);
       formDatas.append('opt', 1);
-      console.log(formDatas)
+      // console.log(formDatas)
       this.$axios.post("/api/pic/upload", formDatas, {
         headers: {
           'Authorization': `Bearer ${localStorage.jwt}`,
           "Content-Type": "multipart/form-data"
         }
       }).then(response => {
-        console.log(this.createForm.pics)
+        // console.log(this.createForm.pics)
         let curUrl = response.data.path;
         this.createForm.pics.push(curUrl)
       })
