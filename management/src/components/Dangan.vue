@@ -33,7 +33,7 @@
                 </el-card> -->
 
                 <el-dialog title="创建新档案" :visible.sync="createVisible" width="70%" @closed="resetForm('createForm')">
-                  <el-form ref="createForm" :model="createForm" label-width="80px">
+                  <el-form ref="createForm" :model="createForm" :rules="createRules" label-width="80px">
                     <el-form-item label="动物姓名" prop="animal_name">
                       <el-input v-model="createForm.animal_name"></el-input>
                     </el-form-item>
@@ -99,7 +99,7 @@
                     <el-button type="primary" @click="openInnerEdit()">编辑</el-button>
                   </span>
                   <el-dialog title="编辑信息" :visible.sync="innerEditVisible" width="65%" append-to-body="true">
-                    <el-form ref="editForm" label-width="80px" :model="editForm">
+                    <el-form ref="editForm" :rules="editRules" label-width="80px" :model="editForm">
                       <!-- {{ editForm }} -->
                       <el-form-item label="动物姓名" prop="animal_name">
                         <el-input v-model="editForm.animal_name"></el-input>
@@ -150,16 +150,16 @@
                 <el-button style="float: right" type="primary" @click="viewRequest(req)">详情</el-button>
               </div>
             </el-card>
-            <el-dialog title="动物领养申请" :visible.sync="viewReqVisible" width="70%" @open="getReqInfo()">
+            <el-dialog title="动物领养申请" :visible.sync="viewReqVisible" width="70%" @closed="handleClose()">
               <el-row>
                 <el-col :span="12">
                   <div>
                     <p>领养人信息:</p>
                     <p>用户名:{{ reqUser.user_name }}</p>
-                    <p>真实姓名:{{ reqUser.real_name }}</p>
+                    <!-- <p>真实姓名:{{ reqUser.real_name }}</p> -->
                     <p>电话号码:{{ reqUser.phone_number }}</p>
                     <p>邮箱:{{ reqUser.email }}</p>
-                    <p>是否是管理员:{{ reqUser.is_admin }}</p>
+                    <p>是否是管理员:{{ isAdmin(reqUser.is_admin )}}</p>
                   </div>
                 </el-col>
                 <el-col :span="12">
@@ -233,12 +233,54 @@ export default {
         animal_type: "",
         pics: []
       },
+      createRules:{
+        animal_name:[
+          {required: true, message:'动物姓名不能为空', trigger: 'blur'},
+          {max: 255, message:'姓名过长', trigger:'blur'}
+        ],
+        animal_type:[
+          {required: true, message:'动物种类不能为空', trigger: 'blur'},
+          {max: 255, message:'姓名过长', trigger:'blur'}
+        ],
+        content:[
+          {required: true, message:'动物描述不能为空', trigger: 'blur'},
+          {max: 255, message:'姓名过长', trigger:'blur'}
+        ],
+        pics:[
+          {required: true, message:'请上传动物图片'}
+        ],
+        animal_sex:[
+          {required: true, message:'请选择动物性别', trigger: 'blur'},
+        ],
+        animal_status:[
+          {required: true, message:'请选择动物状态', trigger: 'blur'},
+        ],
+      },
       editForm:{},
+      editRules:{
+        animal_name:[
+          {required: true, message:'动物姓名不能为空', trigger: 'blur'},
+          {max: 255, message:'姓名过长', trigger:'blur'}
+        ],
+        animal_type:[
+          {required: true, message:'动物种类不能为空', trigger: 'blur'},
+          {max: 255, message:'姓名过长', trigger:'blur'}
+        ],
+        content:[
+          {required: true, message:'动物描述不能为空', trigger: 'blur'},
+          {max: 255, message:'姓名过长', trigger:'blur'}
+        ],
+        pics:[
+          {required: false, message:'请上传动物图片'}
+        ],
+        animal_sex:[
+          {required: true, message:'请选择动物性别', trigger: 'blur'},
+        ],
+        animal_status:[
+          {required: true, message:'请选择动物状态', trigger: 'blur'},
+        ],
+      },
       reqUser: {
-        user_name:"",
-        real_name:"",
-        phone_number:"",
-        email:""
       },
       reqAnimal: "",
       activeReq: "",
@@ -270,6 +312,15 @@ export default {
           return "通过"
         } else {
           return "未处理"
+        }
+      }
+    },
+    isAdmin() {
+      return (is_admin) => {
+        if(is_admin === 1) {
+          return "是";
+        }  else { 
+          return "否";
         }
       }
     }
@@ -312,7 +363,6 @@ export default {
         .catch()
         .then();
     },
-    getReqInfo() { },
     getReq() {
       this.$axios
         .get("/api/animal/adopt/table", {
@@ -377,30 +427,37 @@ export default {
       // console.log(this.editForm)
     },
     editArchive(activeArchive) {
-      this.$axios
-        .post(
-          "/api/animal/update",
-          {
-            animal_id: activeArchive.animal_id,
-            animai_sex: this.editForm.animal_sex,
-            content: this.editForm.content,
-            animal_name: this.editForm.animal_name,
-            animal_status: this.editForm.status,
-            animal_type: this.editForm.animal_type,
-            pics: this.editForm.pics
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.jwt}`,
+      this.$refs['editForm'].validate((valid)=> {
+        if(valid){
+          this.$axios
+          .post(
+            "/api/animal/update",
+            {
+              animal_id: activeArchive.animal_id,
+              animal_sex: this.editForm.animal_sex,
+              content: this.editForm.content,
+              animal_name: this.editForm.animal_name,
+              animal_status: this.editForm.status,
+              animal_type: this.editForm.animal_type,
+              pics: this.editForm.pics
             },
-          }
-        )
-        .then((response) => {
-          // console.log(response.data.code);
-          this.innerEditVisible = false;
-          this.editVisible = false;
-          this.getAnimalArchive();
-        });
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.jwt}`,
+              },
+            }
+          )
+          .then((response) => {
+            // console.log(response.data.code);
+            this.innerEditVisible = false;
+            this.editVisible = false;
+            this.getAnimalArchive();
+          });
+        } else {
+
+        }
+      })
+      
     },
     deleteArchive(animal_archive) {
       this.$axios
@@ -418,30 +475,37 @@ export default {
         .catch();
     },
     createArchive() {
-      this.$axios
-        .post(
-          "/api/animal",
-          {
-            animal_sex: Number(this.createForm.animal_sex),
-            content: this.createForm.content,
-            animal_name: this.createForm.animal_name,
-            animal_status: Number(this.createForm.animal_status),
-            animal_type: this.createForm.animal_type,
-            pics: this.createForm.pics
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.jwt}`,
+      this.$refs['createForm'].validate((valid)=> {
+        if(valid) {
+          this.$axios
+          .post(
+            "/api/animal",
+            {
+              animal_sex: Number(this.createForm.animal_sex),
+              content: this.createForm.content,
+              animal_name: this.createForm.animal_name,
+              animal_status: Number(this.createForm.animal_status),
+              animal_type: this.createForm.animal_type,
+              pics: this.createForm.pics
             },
-          }
-        )
-        .then((response) => {
-          this.getAnimalArchive();
-          // console.log(response.data);
-        })
-        .catch();
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.jwt}`,
+              },
+            }
+          )
+          .then((response) => {
+            this.getAnimalArchive();
+            // console.log(response.data);
+          })
+          .catch();
 
-      this.createVisible = false;
+        this.createVisible = false;
+        } else {
+
+        }
+      })
+
     },
     resetForm(formRef) {
       this.$refs[formRef].resetFields()
@@ -473,10 +537,10 @@ export default {
           let userIdx = tempUserList.findIndex(
             (user) => Number(user.user_id) === Number(req.user_id)
           );
-          if(userIdx) {
+          if(tempUserList[userIdx] != undefined) {
             let thatUser = tempUserList[userIdx];
             this.reqUser = thatUser;
-          }
+          } 
           
         });
     },
@@ -535,6 +599,15 @@ export default {
     },
     handleRemove() {
       console.log(this.picUrls)
+    },
+    handleClose() {
+      this.reqUser = {
+              user_name:"",
+              real_name:"",
+              phone_number:"",
+              email:"",
+              is_admin:"",
+            }
     }
   },
 };

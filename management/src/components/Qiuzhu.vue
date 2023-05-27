@@ -26,26 +26,36 @@
             <el-dialog title="默认标题" :visible.sync="dialogVisible" width="70%" show-close>
                 <span slot="title">{{ activeHelpPost.title }}</span>
                 <div>{{ activeHelpPost.content }}</div>
-                <div style="display: inline-block" v-for="img in activeHelpPost.pics">
                   <!-- {{ activeHelpPost }} -->
-                  <el-image style="width: 100px; height: 100px" :src="img"></el-image>
-                </div>
+                  <div
+                      v-if="activeHelpPost.pics != None && activeHelpPost.pics.length != 0 && (activeHelpPost.pics.length != 1 || activeHelpPost.pics[0].length != 0)">
+                      <div class="block" style="display: inline-block;" v-for="img in activeHelpPost.pics">
+                          <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                      </div>
+                  </div>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="checkFinish(activeHelpPost)">审核完成</el-button>
                   <el-button @click="dialogVisible = false">关闭</el-button>
                 </span>
-
+                  <el-card shadow="never" v-for="comment in curComments">
+                  {{ comment.content }}
+                </el-card>
+                
                 <el-divider></el-divider>
 
-                <el-form ref="form" :model="helpForm" label-width="80px">
-                  <el-form-item>
-                    <el-col :span="16" :offset="2">
+                <el-form ref="form" :model="helpForm" :rules="helpRules" label-width="80px">
+                  
+                  <el-col :span="16" :offset="2">
+                  <el-form-item prop="comment">
                       <el-input type="textarea" autosize placeholder="请输入回复" v-model="helpForm.comment"></el-input>
-                    </el-col>
-                    <el-col :span="4">
-                      <el-button type="primary" @click="sendComment(activeHelpPost)">发送回复</el-button>
-                    </el-col>
                   </el-form-item>
+                </el-col>
+                  <el-col :span="4">
+                  <el-form-item>
+                      <el-button type="primary" @click="sendComment(activeHelpPost)">发送回复</el-button>
+                    
+                  </el-form-item>
+                </el-col>
                 </el-form>
               </el-dialog>
           </el-collapse-item>
@@ -93,6 +103,14 @@ export default {
         comment: "",
         helpPostStatus: "",
       },
+      helpRules:{
+        comment:[
+          {
+            required: true, message:'请输入回复', trigger: 'blur'
+          }
+        ]
+      },
+      curComments:[],
     };
   },
   created() {
@@ -124,7 +142,9 @@ export default {
       });
     },
     sendComment(activeHelpPost) {
-      console.log("1");
+      this.$refs["form"].validate((valid)=>{
+        if(valid) {
+          console.log("1");
       this.$axios
         .post(
           "/api/post/comment",
@@ -141,7 +161,14 @@ export default {
         )
         .then((response) => {
           console.log(response.data.code);
+          this.helpForm.comment = "";
+          this.getComments(activeHelpPost);
         });
+        } else {
+          return false;
+        }
+      })
+      
     },
     checkFinish(activeHelpPost) {
       this.$axios
@@ -179,6 +206,20 @@ export default {
     viewHelpPost(post) {
       this.dialogVisible = true;
       this.activeHelpPost = post;
+      this.getComments(post);
+    },
+    getComments(post) {
+      this.$axios.post("/api/post/detail",{
+          user_id:post.author_id,
+          post_id:post.post_id
+        
+      },{
+        headers: {
+          Authorization: `Bearer ${localStorage.jwt}`,
+        },
+      }).then((response) => {
+        this.curComments = response.data.data.comments;
+      })
     },
     getHelpPosts() {
       this.$axios

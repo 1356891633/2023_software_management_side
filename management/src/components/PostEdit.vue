@@ -13,14 +13,14 @@
                 </el-menu>
             </el-aside>
             <el-main class="el-main">
-                <el-form ref="form" :model="postData" label-width="80px">
-                    <el-form-item label="帖子标题">
+                <el-form ref="form" :model="postData" :rules="rules" label-width="80px">
+                    <el-form-item label="帖子标题" prop="title">
                         <el-input v-model="postData.title" placeholder=""></el-input>
                     </el-form-item>
-                    <el-form-item label="帖子内容">
+                    <el-form-item label="帖子内容" prop="content">
                         <el-input v-model="postData.content" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
-                    <el-form-item label="图片">
+                    <el-form-item label="图片" prop="pics">
                         <div style="display: inline-block;" v-for="img in postData.pics">
                             <el-image style="width: 100px; height: 100px" :src="img"></el-image>
                         </div>
@@ -65,6 +65,24 @@ export default ({
             //TODO: to be modified
             postData: {
             },
+            rules:{
+                title:[
+                    {
+                        required: true, message:'标题不能为空', trigger: 'blur'
+                    },
+                    {
+                        max: 255, message:"标题过长", trigger: 'blur'
+                    },
+                ],
+                content:[
+                    {
+                        required: true, message:'请输入内容', trigger: 'blur'
+                    },
+                    {
+                        max: 255, message:"内容过长", trigger: 'blur'
+                    },
+                ]
+            },
             picUrls: []
         }
     },
@@ -74,24 +92,29 @@ export default ({
     },
     methods: {
         onSubmit() {
-            let updateData = {
-                user_id: Number(localStorage.user_id),
-                post_id: this.postData.post_id,
-                title: this.postData.title,
-                content: this.postData.content,
-                pics: this.picUrls //TODO:
-            }
-            this.$axios.post('/api/post/update', updateData, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.jwt}`
+            this.$refs["form"].validate((valid) => {
+                if(valid) {
+                    let updateData = {
+                        user_id: Number(localStorage.user_id),
+                        post_id: this.postData.post_id,
+                        title: this.postData.title,
+                        content: this.postData.content,
+                        pics: this.picUrls //TODO:
+                    }
+                    this.$axios.post('/api/post/update', updateData, {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.jwt}`
+                        }
+                    }).then((response) => {
+
+                    }).catch().then(
+                        this.changeToTiezi()
+                    );
+                } else {
+                    
                 }
-            }).then((response) => {
-
-            }).catch(
-
-            ).then(
-                this.changeToTiezi()
-            );
+            })
+            
         },
         editPost(item) {
             this.$router.push({ path: '/PostEdit', query: { Item: item, ManagerToken: this.Token } });

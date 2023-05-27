@@ -14,9 +14,9 @@
     <img src="/src/assets/school.png" alt="" />
     <el-divider direction="vertical"></el-divider>
     <el-drawer title="通知" :visible.sync="drawer" @opened="openedNotice()" :before-close="handleClose">
-      <div v-for="(notice,idx) in notices">
+      <div v-for="(notice,idx) in curUserNotices">
         {{ notice.content }}
-        <el-button type="success" icon="el-icon-check" circle @click="readNotice(idx)"></el-button>
+        <!-- <el-button type="success" icon="el-icon-check" circle @click="readNotice(idx)"></el-button> -->
       </div>
     </el-drawer>
   </div>

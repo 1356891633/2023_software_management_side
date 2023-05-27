@@ -2,7 +2,7 @@
     <!-- article - start -->
     <div class="flex flex-col overflow-hidden rounded-lg border bg-white">
         <a @click="emitClick" class="cursor-pointer group relative block h-48 overflow-hidden bg-gray-100 md:h-64">
-            <img :src="postFirstPic"
+            <el-image :src="postFirstPic"
                 loading="lazy" alt="加载失败"
                 class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
         </a>
