@@ -400,14 +400,14 @@ export default {
         this.getReq();
         let n_content="";
         if (passFlag) {
-          n_content="领养申请通过";
+          n_content="已通过";
         } else {
-          n_content="领养申请未通过";
+          n_content="未通过";
         }
         this.$axios.post("/api/notice",{
-          user_id:this.reqUser.user_id,
-          title:"领养申请审核结果通知",
-          content:n_content,
+          user_id: this.reqUser.user_id,
+          title:`${this.reqAnimal.animal_name} 的领养申请审核结果通知`,
+          content:`您对“${this.reqAnimal.animal_name}”（adopt_id：${this.activeReq.adopt_id}）的领养申请${n_content}`,
         },{
           headers: {
             Authorization: `Bearer ${localStorage.jwt}`,

@@ -106,7 +106,7 @@ export default {
       helpRules:{
         comment:[
           {
-            required: true, message:'请输入回复', trigger: 'blur'
+            required: true, message:'请输入回复'
           }
         ]
       },
@@ -188,11 +188,12 @@ export default {
         .then((response) => {
           this.getHelpPosts();
           console.log(response.data.code);
-          this.dialogVisible = false
+          this.dialogVisible = false;
+          
           this.$axios.post("/api/notice",{
             user_id:Number(localStorage.user_id),
-            title:"求助审核结果通知",
-            content:"求助内容已处理",
+            title:`${activeHelpPost.title} 求助审核结果通知`,
+            content:`您的求助《${activeHelpPost.title}》（id：${activeHelpPost.post_id}）已被受理`,
           },{
             headers: {
               Authorization: `Bearer ${localStorage.jwt}`,
