@@ -59,34 +59,39 @@
         >
           <div v-show="!isShow">
             <div class="title">找回密码</div>
-            <div >
+            <div>
               <p>请输入你的账号邮箱</p>
               <el-form>
                 <div class="findcontent">
-                  
-                 <el-input
-                  v-model="email"
-                  placeholder="请输入邮箱"
-                  class="input"
-                  size="medium"
-                ></el-input></div>
-                <div class="findcontent"><el-input
-                  v-model="phonenumber"
-                  placeholder="请输入电话号码"
-                  class="input"
-                ></el-input></div>
-                <div class="findcontent"> <el-input
-                  v-model="new_password"
-                  show-password
-                  placeholder="请输入新密码"
-                  class="input"
-                ></el-input></div>
-                <div class="findcontent"> 
-                <el-input
-                  v-model="userCode"
-                  placeholder="验证码"
-                  class="input"
-                ></el-input></div>
+                  <el-input
+                    v-model="email"
+                    placeholder="请输入邮箱"
+                    class="input"
+                    size="medium"
+                  ></el-input>
+                </div>
+                <div class="findcontent">
+                  <el-input
+                    v-model="phonenumber"
+                    placeholder="请输入电话号码"
+                    class="input"
+                  ></el-input>
+                </div>
+                <div class="findcontent">
+                  <el-input
+                    v-model="new_password"
+                    show-password
+                    placeholder="请输入新密码"
+                    class="input"
+                  ></el-input>
+                </div>
+                <div class="findcontent">
+                  <el-input
+                    v-model="userCode"
+                    placeholder="验证码"
+                    class="input"
+                  ></el-input>
+                </div>
               </el-form>
               <el-button @click="getvCode()">点击获取验证码</el-button>
               <el-button @click="modify()">确认</el-button>
@@ -205,7 +210,7 @@ export default {
       new_password: "",
       vCode: "",
       userCode: "",
-      phonenumber:"",
+      phonenumber: "",
       loginUser: {
         user_id: "",
         user_password: "",
@@ -225,10 +230,10 @@ export default {
             trigger: "blur",
           },
           {
-            min:6,
+            min: 6,
             message: "密码长度不小于6位",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
       },
       styleObj: {
@@ -281,47 +286,72 @@ export default {
     modify() {
       //TODO
       this.$axios
-        .post("/api/user/update/password", JSON.stringify( {
-          phone_number: this.phonenumber, //TODO,
-          new_password: this.new_password,
-          send_code: this.vCode,
-          user_code: this.userCode,
-        }))
+        .post(
+          "/api/user/update/password",
+          JSON.stringify({
+            phone_number: this.phonenumber, //TODO,
+            new_password: this.new_password,
+            send_code: this.vCode,
+            user_code: this.userCode,
+          })
+        )
         .then((response) => {
           if (response.data.code == 200) {
             this.$message({
               message: "更新成功",
               type: "success",
             });
-          }
-          else{
+          } else {
             this.$message({
-              message:"更新失败"
-            })
+              message: response.data.msg,
+              type: "error",
+            });
+          }
+        })
+        .catch((response) => {
+          let resData = response.response.data;
+          console.log(resData);
+          if (resData.code >= 400 && resData.code < 500) {
+            this.$message.error(resData.msg);
+            this.loginUser.user_password = "";
+          } else if (resData.code >= 500) {
+            this.$message({
+              message: "服务器故障，请稍后再试",
+              type: "error",
+            });
           }
         });
     },
     getvCode() {
       console.log("getget");
-      this.$axios.post(
-        "/api/user/identify",
-        {
-          email:this.email
-        }
-      ).then((response)=>{
-        if (response.data.code == 200) {
+      this.$axios
+        .post("/api/user/identify", {
+          email: this.email,
+        })
+        .then((response) => {
+          if (response.data.code == 200) {
             this.vCode = response.data.vCode;
-            console.log(this.vCode)
+            console.log(this.vCode);
             this.$message({
               message: "验证码发送成功",
               type: "success",
             });
-          } else {
+          }
+        })
+        .catch((response) => {
+          let resData = response.response.data;
+          console.log(resData);
+          console.log(qweiqwyeiuqyweq)
+          if (resData.code >= 400 && resData.code < 500) {
+            this.$message.warning("用户名或密码错误");
+            this.loginUser.user_password = "";
+          } else if (resData.code >= 500) {
             this.$message({
-              message: "验证码发送失败",
+              message: "服务器故障，请稍后再试",
+              type: "error",
             });
           }
-      })
+        });
     },
     userLogin() {
       this.$refs["loginUser"].validate((valid) => {
@@ -349,22 +379,20 @@ export default {
                 }, 500);
               } else {
                 //error message
-                
               }
             })
             .catch((response) => {
               let resData = response.response.data;
               console.log(resData);
-              if(resData.code >= 400 && resData.code < 500) {
+              if (resData.code >= 400 && resData.code < 500) {
                 this.$message.warning("用户名或密码错误");
-               this.loginUser.user_password="";
-              } else if(resData.code >= 500) {
+                this.loginUser.user_password = "";
+              } else if (resData.code >= 500) {
                 this.$message({
                   message: "服务器故障，请稍后再试",
                   type: "error",
                 });
               }
-              
             });
         } else {
           console.log("error submit!!");
@@ -387,20 +415,17 @@ export default {
   background-size: 100%;
 }
 .findcontent {
-  margin-top:10px;
+  margin-top: 10px;
   background-color: #f5f5f5;
-  
 }
 .findcontent span {
-  height:35px;
+  height: 35px;
   margin-left: 20px;
   float: left;
   text-align: center;
-
 }
-.findcontent input{
-  
-  width:100%;
+.findcontent input {
+  width: 100%;
 }
 
 .loginAndRegister {
