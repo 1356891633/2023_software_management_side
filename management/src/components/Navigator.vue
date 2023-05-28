@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     readNotice() {
-
+      
     },
     openedNotice() {
       this.$axios.get("/api/notice/table",{
