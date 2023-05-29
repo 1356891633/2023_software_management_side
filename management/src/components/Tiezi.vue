@@ -143,12 +143,10 @@ export default ({
           'Authorization': `Bearer ${localStorage.jwt}`
         }
       }).then((response) => {
-
+        this.getPosts();
       }).catch((response) => {
 
-      }).then(() => {
-        this.getPosts();
-      });
+      })
     },
     getPosts() {
       this.$axios.get("/api/post/table", {

@@ -2,7 +2,7 @@
     <!-- product - start -->
     <div>
         <a class="cursor-pointer group mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
-            <img @click="emitClick" :src="archiveFirstPic" loading="lazy" alt="Photo by Austin Wade"
+            <img @click="emitClick" :src="archiveFirstPic" loading="lazy" alt="加载失败"
                 class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
         </a>
         <div class="flex flex-row items-end justify-evenly content-end">
