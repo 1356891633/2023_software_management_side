@@ -500,7 +500,7 @@ export default {
           })
           .catch();
 
-        this.createVisible = false;
+          this.createVisible = false;
         } else {
 
         }

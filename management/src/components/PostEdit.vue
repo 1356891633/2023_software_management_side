@@ -20,11 +20,15 @@
                     <el-form-item label="帖子内容" prop="content">
                         <el-input v-model="postData.content" type="textarea" :rows="10" autosize></el-input>
                     </el-form-item>
-                    <el-form-item label="图片" prop="pics">
-                        <div style="display: inline-block;" v-for="img in postData.pics">
-                            <el-image style="width: 100px; height: 100px" :src="img"></el-image>
-                        </div>
-                    </el-form-item>
+
+                    <div v-if="postData.pics != None && postData.pics.length != 0 && (postData.pics.length != 1 || postData.pics[0].length != 0)">
+                        <el-form-item label="图片" prop="pics">
+                            <div style="display: inline-block;" v-for="img in postData.pics">
+                                <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                            </div>
+                        </el-form-item>
+                    </div>
+                    
 
                     <el-form-item label="图片上传">
                         <el-upload class="img-upload" drag multiple action :file-list="picUrls" :http-request="uploadPic"

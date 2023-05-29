@@ -4,7 +4,11 @@
         <a @click="emitClick" class="cursor-pointer group relative block h-48 overflow-hidden bg-gray-100 md:h-64">
             <el-image :src="postFirstPic"
                 loading="lazy" alt="加载失败"
-                class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
+                class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" >
+                <div slot="error" class="image-slot">
+                    <el-image fit="cover" src="/static/PostDefault.jpg"/>
+                </div>
+            </el-image>
         </a>
 
         <div class="flex flex-1 flex-col p-4 sm:p-6">

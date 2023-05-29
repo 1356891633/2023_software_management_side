@@ -23,6 +23,10 @@ module.exports = {
             '/user' : {
                 target: 'https://114.116.211.142',
                 changeOrigin: true,
+            },
+            '/static' :{
+                target: 'https://114.116.211.142',
+                changeOrigin: true,
             }
         }
     }

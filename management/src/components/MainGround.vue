@@ -21,7 +21,7 @@
               <div>
                 <p style="float: left; margin-left: 10px;">用户名：{{ item.user_name }}</p>
                 <p style="float: left; margin-left: 10px;">电话号码：{{ item.phone_number }}</p>
-
+                <p style="float: left; margin-left: 10px;">邮箱：{{ item.email }}</p>
                 <el-button v-if="item.is_admin!==1" @click="ChangeToAdmin(item)" class="button" type="success" size="small"
                   icon="el-icon-edit">设为管理员</el-button>
                 <!-- <el-button @click="EditUser(item)" class="button" type="primary"

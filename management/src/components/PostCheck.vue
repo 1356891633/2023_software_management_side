@@ -16,9 +16,12 @@
                 <h>{{ postData.title }}</h>
                 <el-divider></el-divider>
                 <p>{{ postData.content }}</p>
-                <div v-for="img in postData.pics">
-                    <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                <div v-if="postData.pics != None && postData.pics.length != 0 && (postData.pics.length != 1 || postData.pics[0].length != 0)">
+                    <div v-for="img in postData.pics">
+                        <el-image style="width: 100px; height: 100px" :src="img"></el-image>
+                    </div>
                 </div>
+                
                 <el-form ref="form" :model="postData" label-width="80px">
                     <!-- <el-form-item label="帖子标题">
                         <el-input v-model="postData.title" placeholder=""></el-input>
