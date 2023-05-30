@@ -366,17 +366,26 @@ export default {
             )
             .then((response) => {
               if (response.data.code == 200) {
-                this.$message({
-                  message: "登录成功！",
-                  type: "success",
-                });
-                this.Token = response.data.data.token;
-                localStorage.jwt = response.data.data.token;
-                this.getinfo();
-                console.log("jump");
-                setTimeout(() => {
-                  this.$router.push({ path: "/MainGround", query: this.Token });
-                }, 500);
+                
+                if(response.data.data.isAdmin !== 1) {
+                  this.$message.error("权限不足！");
+                  this.loginUser.user_password = "";
+                  this.loginUser.user_id = "";
+                  localStorage.clear();
+                  this.Token = "";
+                } else {
+                  this.$message({
+                    message: "登录成功！",
+                    type: "success",
+                  });
+                  this.Token = response.data.data.token;
+                  localStorage.jwt = response.data.data.token;
+                  this.getinfo();
+                  setTimeout(() => {
+                    this.$router.push({ path: "/MainGround", query: this.Token });
+                  }, 500);
+                }
+                
               } else {
                 //error message
               }

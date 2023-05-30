@@ -15,8 +15,12 @@
     <el-divider direction="vertical"></el-divider>
     <el-drawer title="通知" :visible.sync="drawer" @opened="openedNotice()" :before-close="handleClose">
       <div v-for="(notice,idx) in curUserNotices">
-        {{ notice.content }}
-        <!-- <el-button type="success" icon="el-icon-check" circle @click="readNotice(idx)"></el-button> -->
+        
+        <el-card shadow="never">
+          {{ notice.content }}
+          <!-- <el-button type="success" icon="el-icon-check" circle @click="readNotice(idx)"></el-button> -->
+        </el-card>
+        
       </div>
     </el-drawer>
   </div>
@@ -34,10 +38,13 @@ export default {
   },
   computed:{
     curUserNotices() {
-      return this.notices.filter(notice => notice.user_id === this.ManagerUserData.usur_id);
+      return this.notices.filter(notice => notice.user_id === this.ManagerUserData.user_id);
     }
   },
   created() {
+    // this.getinfo();
+  },
+  mounted() {
     this.getinfo();
   },
   methods: {
